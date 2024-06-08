@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./components/Public/Home.jsx";
 import PostDetails from "./components/Public/PostDetails.jsx";
 import Dashboard from "./components/DashBoard/Dashboard.jsx";
@@ -13,7 +12,10 @@ import AdminProfile from "./components/DashBoard/Admin/AdminProfile.jsx";
 import AnnounceMent from "./components/DashBoard/Admin/AnnounceMent.jsx";
 import ManageUsers from "./components/DashBoard/Admin/ManageUsers.jsx";
 import Reported from "./components/DashBoard/Admin/Reported.jsx";
-import { AuthContext } from "./auth/AuthContext.jsx";
+import SignIn from "./components/Public/SignIn.jsx";
+import Register from "./components/Public/Register.jsx";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import AuthProvider from "./auth/AuthProvider.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/details/:id",
         element: <PostDetails />,
+      },
+      {
+        path: "/sign-in",
+        element: <SignIn />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
   },
@@ -68,8 +78,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthContext.Consumer>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </AuthContext.Consumer>
+    </AuthProvider>
   </React.StrictMode>
 );
