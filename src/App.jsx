@@ -4,7 +4,7 @@ import Footer from "./components/Public/Footer";
 
 const App = () => {
   return (
-    <div>
+    <div className="font-poppins">
       <Navbar/>
       <Outlet/>
       <Footer/>

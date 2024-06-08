@@ -6,17 +6,18 @@ import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 const Navbar = () => {
   const [open, isOpen] = useState(false);
+  const [showToken, setShowToken] = useState(false);
   //   const { user } = useAuth();
   const user = true;
+  console.log(showToken);
   return (
-    <nav className="relative  shadow bg-gray-800">
-      <div className="container p-3 mx-auto">
+    <nav className="relative w-full shadow bg-gray-800">
+      <div className="max-w-screen-2xl p-3 mx-auto">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
-            <a href="#">
-              {/* <img className="w-auto h-6 sm:h-7" src="https://merakiui.com/images/full-logo.svg" alt=""> */}
+            <a className="text-3xl font-semibold text-white" href="#">
+              Neighbors
             </a>
-
             <div className="flex lg:hidden">
               <RxHamburgerMenu
                 onClick={() => isOpen(!open)}
@@ -32,7 +33,6 @@ const Navbar = () => {
               />
             </div>
           </div>
-
           <div
             className={`${
               open ? "translate-x-0 opacity-100" : "opacity-0 -translate-x-full"
@@ -55,7 +55,13 @@ const Navbar = () => {
 
             <div className="flex items-center gap-4 mt-4 lg:mt-0 relative">
               <FaRegBell className="text-xl text-white cursor-pointer" />
-              <div className={`absolute pt-4 top-14 w-48 bg-slate-200 `}>
+              <div
+                className={`absolute pt-4  w-48 bg-slate-200 ${
+                  showToken
+                    ? "top-14 opacity-100 pointer-events-auto"
+                    : "top-20 opacity-0 pointer-events-none"
+                } duration-150`}
+              >
                 <h1 className="font-medium text-center p-2">
                   Abdur Rahamn Rahi
                 </h1>
@@ -72,7 +78,10 @@ const Navbar = () => {
                 </div>
               </div>
               {user ? (
-                <div className="w-10 h-10  overflow-hidden border-2 p-0.5  border-gray-400 rounded-full">
+                <div
+                  onClick={() => setShowToken(!showToken)}
+                  className="w-10 h-10  overflow-hidden border-2 p-0.5  border-gray-400 rounded-full"
+                >
                   <img
                     className="w-full h-full rounded-full cursor-pointer"
                     src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
