@@ -1,5 +1,5 @@
 
-const AnnounceMent = () => {
+const Footer = () => {
     return (
         <div>
             
@@ -7,4 +7,4 @@ const AnnounceMent = () => {
     );
 };
 
-export default AnnounceMent;
+export default Footer;
