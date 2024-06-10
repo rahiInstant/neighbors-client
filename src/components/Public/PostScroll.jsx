@@ -1,6 +1,7 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa6";
 import { BsThreeDots } from "react-icons/bs";
+import { Link } from "react-router-dom";
 const PostScroll = () => {
   return (
     <div className="">
@@ -46,14 +47,15 @@ const PostScroll = () => {
         <div className="mt-3  text-2xl ">
           What happen in our education system. It is a great scam to this. We
           are very much{" "}
-          <span className="text-[#1f5cdf] font-medium italic text-base cursor-pointer">
+          <Link to={`/details/255d4f5452d`} className="text-[#1f5cdf] font-medium italic text-base cursor-pointer">
             see more...
-          </span>
+          </Link>
         </div>
         <div className="mt-3">
           <div className="font-medium italic">#education</div>
           <div className="font-medium italic">#save_us_from_scam</div>
         </div>
+        
         <div className="italic flex justify-between mt-6">
           <div className="flex items-center gap-3">
             <div className="flex gap-1 items-center">
