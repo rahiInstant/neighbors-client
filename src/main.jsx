@@ -16,6 +16,7 @@ import SignIn from "./components/Public/SignIn.jsx";
 import Register from "./components/Public/Register.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "./auth/AuthProvider.jsx";
+import MemberShip from "./components/Public/MemberShip.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path:'/membership',
+        element:<MemberShip/>
+      }
     ],
   },
   {

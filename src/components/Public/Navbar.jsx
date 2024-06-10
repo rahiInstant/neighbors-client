@@ -47,7 +47,7 @@ const Navbar = () => {
               </Link>
               <Link
                 className="px-3 py-2 mx-3 mt-2 transition-colors duration-300 transform rounded-md lg:mt-0 text-gray-200  dark:hover:bg-gray-700"
-                to="/"
+                to="/membership"
               >
                 Membership
               </Link>
