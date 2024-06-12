@@ -3,6 +3,8 @@ import { Radio, Tabs } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MyProfile from "./User/MyProfile";
+import MyPosts from "./User/MyPosts";
+import AddPosts from "./User/AddPosts";
 const Dashboard = () => {
   const [mode, setMode] = useState("top");
   const [route, setRoute] = useState([]);
@@ -18,8 +20,8 @@ const Dashboard = () => {
   ];
   const userRoute = [
     { name: "My Profile" , content:<MyProfile/>},
-    { name: "Add post" },
-    { name: "My Post" },
+    { name: "My Post", content:<MyPosts/> },
+    { name: "Add post", content:<AddPosts/> },
   ];
   useEffect(() => {
     if (isAdmin) {
@@ -30,7 +32,7 @@ const Dashboard = () => {
   }, [isAdmin]);
 
   return (
-    <div className="max-w-7xl mx-auto p-6 shadow mt-5 ">
+    <div className="max-w-7xl mx-auto p-6 shadow my-8">
       <Link to="/" className="w-10 h-10 hover:bg-slate-200 rounded-full border flex justify-center items-center duration-300 cursor-pointer">
         <FaArrowLeft />
       </Link>
