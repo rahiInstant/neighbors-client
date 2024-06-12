@@ -68,7 +68,7 @@ const Navbar = () => {
                 <div className="">
                   <Link
                     className="block py-3 px-5 text-left border-b border-white hover:bg-slate-500 hover:text-gray-100"
-                    to="/"
+                    to="dashboard"
                   >
                     Dashboard
                   </Link>
