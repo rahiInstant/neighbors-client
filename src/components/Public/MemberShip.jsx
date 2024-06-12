@@ -6,7 +6,6 @@ const stripePromise = loadStripe(
   "pk_test_51PNtchRqCMfc85qchC5i8PCcQ28tRw2seBsrnsSBzpyXLIndQsPkGWWZRzQdI2kAP1Kks62AsgRq7lYCwfh480C900gZFy4xPQ"
 );
 
-
 const MemberShip = () => {
   const appearance = {
     theme: "stripe",
