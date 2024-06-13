@@ -32,7 +32,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="mx-10">
+    <div className="mx-4 sm:mx-6 lg:mx-10">
       <div className="max-w-7xl mx-auto p-6 shadow my-8 ">
         <Link
           to="/"

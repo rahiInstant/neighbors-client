@@ -51,7 +51,7 @@ const AdminProfile = () => {
         </div>
       </div>
       <form className="mt-6">
-        <div className="flex gap-5 w-full">
+        <div className="flex gap-5 w-full lg:flex-row flex-col">
           <input
             id="title"
             name="title"
@@ -61,7 +61,7 @@ const AdminProfile = () => {
             required
           />
           <button
-            className="py-4 px-5 bg-[#115aad] rounded-md text-xl font-semibold text-white w-[200px] block"
+            className="py-4 px-5 bg-[#115aad] rounded-md text-xl font-semibold text-white w-full lg:w-[200px] block"
             type="submit"
           >
             Add Tag

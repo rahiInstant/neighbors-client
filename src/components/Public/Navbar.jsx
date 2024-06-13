@@ -8,7 +8,7 @@ const Navbar = () => {
   const [open, isOpen] = useState(false);
   const [showToken, setShowToken] = useState(false);
   //   const { user } = useAuth();
-  const user = true;
+  const user = false;
   console.log(showToken);
   return (
     <nav className="relative w-full shadow bg-gray-800">
@@ -90,7 +90,7 @@ const Navbar = () => {
                 </div>
               ) : (
                 <Link
-                  to="/"
+                  to="/sign-in"
                   className="cursor-pointer py-2 px-5 rounded-lg bg-[#83cc79] text-lg font-semibold text-[#020f02]"
                 >
                   Join Us
