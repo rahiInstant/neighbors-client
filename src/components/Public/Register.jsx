@@ -13,18 +13,7 @@ const Register = () => {
         </div>
         <form className="mt-5 sm:p-5">
           <div className="flex gap-5 lg:flex-row flex-col">
-            <div className="flex justify-center">
-              <div className="border relative h-fit w-fit flex flex-col rounded-full">
-                <img
-                  className="w-32 lg:w-52 h-32 lg:h-52 rounded-full"
-                  src="/user.png"
-                  alt=""
-                />
-              <button className="p-2 absolute bottom-0 right-1 lg:right-8 bg-white  rounded-full flex items-center justify-center border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
-                <FaUpload className="w-4 h-4" />
-              </button>
-              </div>
-            </div>
+
             <div className="flex gap-3 flex-auto flex-col text-[#1b1a1a]">
               <div className="w-full">
                 <label className="block text-xl font-semibold  " htmlFor="name">

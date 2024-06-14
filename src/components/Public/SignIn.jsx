@@ -1,10 +1,40 @@
 import { FaFacebook, FaGithub } from "react-icons/fa";
 import { IoLogoGoogle } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
+import { useState } from "react";
 
 const SignIn = () => {
+  const { googleSignIn } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const successMsg = (msg) => toast.success(msg);
+  const errorMsg = (msg) => toast.error(msg);
+  const [helmet, setHelmet] = useState("Neighbors | Log in");
+
+  function handleGoogleSignIn() {
+    googleSignIn()
+      .then((result) => {
+        successMsg("Sign in successfully with Google. Redirecting...");
+        setHelmet("Redirecting...");
+        setTimeout(() => {
+          navigate(location?.state ? location.state : "/");
+        }, 1000);
+      })
+      .then((error) => {
+        const Msg = error.message;
+        const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
+        errorMsg(actualMsg);
+      });
+  }
+
   return (
     <div className="max-w-7xl mx-auto mb-10">
+      <Helmet>
+        <title>{helmet}</title>
+      </Helmet>
       <div className=" p-5 mt-5  rounded-md mx-5 border">
         <div className="flex items-center justify-center flex-col bg-[url('/log.jpg')] border bg-no-repeat bg-cover h-40 rounded-lg ">
           <h1 className="text-[40px] font-semibold mt-2 text-[#f1f1f1]">
@@ -48,7 +78,7 @@ const SignIn = () => {
         </form>
         <div className="flex flex-row gap-5 mt-4">
           <button
-            //   onClick={handleGoogleSignIn}
+            onClick={handleGoogleSignIn}
             className=" w-full flex text-xl items-center justify-center gap-2 py-3 border rounded-lg border-[#0b50a0]  font-medium hover:bg-[#0b50a0] hover:text-white duration-150"
             type="submit"
           >

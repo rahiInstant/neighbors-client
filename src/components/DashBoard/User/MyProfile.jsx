@@ -1,4 +1,10 @@
-import { FaRegComments, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
+import {
+  FaPen,
+  FaRegComments,
+  FaRegThumbsDown,
+  FaRegThumbsUp,
+  FaUpload,
+} from "react-icons/fa";
 import { RiDeleteBin4Fill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
 const MyProfile = ({ setKey }) => {
@@ -35,11 +41,18 @@ const MyProfile = ({ setKey }) => {
   return (
     <div>
       <div className="mt-5 flex items-center flex-col">
-        <img
-          className="w-28 h-28 rounded-full border-4 border-[#30a01a91]"
-          src="/user.png"
-          alt=""
-        />
+        <div className="flex justify-center">
+          <div className="border relative h-fit w-fit flex flex-col rounded-full">
+            <img
+              className="w-32 lg:w-40 h-32 lg:h-40 rounded-full"
+              src="/user.png"
+              alt=""
+            />
+            <button className="p-2 absolute bottom-0 right-1 lg:right-8 bg-white  rounded-full flex items-center justify-center border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
+              <FaPen className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
         <h1 className="text-[35px] font-bold ">Abdur Rahaman Rahi</h1>
         <p className="text-lg italic">rahiurp20@gmail.com</p>
         <div className="mt-3 py-1 px-8 bg-[#be6512] font-medium text-xs w-fit text-white rounded-full">
