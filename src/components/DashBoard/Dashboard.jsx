@@ -16,7 +16,7 @@ const Dashboard = () => {
   const handleModeChange = (e) => {
     setMode(e.target.value);
   };
-  const isAdmin = true;
+  const isAdmin = false;
   const route = {
     adminRoute: [
       { name: "Admin Profile", content: <AdminProfile /> },

@@ -1,5 +1,9 @@
+import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
 const AddPosts = () => {
+  // const [isDrop, setIsDrop] = useState(false);
+  const option = ["education", "entertainment", "media", "football", "fire"];
   return (
     <div className=" ">
       <form className="p-5 border w-full rounded-md">
@@ -68,7 +72,41 @@ const AddPosts = () => {
               />
             </div>
             <div className="relative h-fit  border rounded-md w-full">
-              
+              {/* <div
+                id="drop-head"
+                className="py-4 px-5 text-lg flex justify-between items-center"
+              >
+                <div>-- Tags --</div>
+                <div className="flex items-center gap-2">
+                  <div
+                    onClick={() => setIsDrop(!isDrop)}
+                    className="cursor-pointer"
+                  >
+                    <RxCross2 className="w-5 h-5 text-[#a8a7a7] hover:text-[#000]" />
+                  </div>
+                  <div
+                    onClick={() => setIsDrop(!isDrop)}
+                    className="cursor-pointer"
+                  >
+                    <IoIosArrowDown className="w-5 h-5 text-[#a8a7a7] hover:text-[#000]" />
+                  </div>
+                </div>
+              </div> */}
+              {/* <div
+                id="drop-down"
+                className={`${
+                  isDrop ? "" : "hidden"
+                } absolute p-2 border w-full rounded-md bg-slate-50 font-medium italic top-[60px]`}
+              >
+                {option.map((item, id) => (
+                  <div
+                    className="py-1 px-2 hover:bg-blue-100 rounded-md cursor-pointer"
+                    key={id}
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div> */}
               <select
                 name="origin"
                 required
@@ -77,11 +115,13 @@ const AddPosts = () => {
                 <option className="hidden" value="">
                   -- Tags --
                 </option>
-                <option value="education">#education</option>
-                <option value="entertainment">#entertainment</option>
-                <option value="media">#media</option>
-                <option value="football">#football</option>
-                <option value="fire">#fire</option>
+                {option.map((item, idx) => {
+                  return (
+                    <option key={idx} value={item}>
+                      #{item}
+                    </option>
+                  );
+                })}
               </select>
               <div className="absolute top-1/2 right-3 -translate-y-1/2 pointer-events-none">
                 <IoIosArrowDown className="text-2xl" />
@@ -121,7 +161,7 @@ const AddPosts = () => {
           </div>
           <div className="w-full">
             <label className="block text-xl font-semibold  " htmlFor="photo">
-             Down Vote
+              Down Vote
             </label>
             <input
               className="py-4 px-5 w-full mt-2 text-lg rounded-md outline-none border "
@@ -132,7 +172,12 @@ const AddPosts = () => {
             />
           </div>
         </div>
-        <button className="py-4 px-5 rounded-md bg-[#115aad] mt-5 w-full text-xl font-semibold text-white" type="submit">Add Post</button>
+        <button
+          className="py-4 px-5 rounded-md bg-[#115aad] mt-5 w-full text-xl font-semibold text-white"
+          type="submit"
+        >
+          Add Post
+        </button>
       </form>
     </div>
   );

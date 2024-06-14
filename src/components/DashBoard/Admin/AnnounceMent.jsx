@@ -2,7 +2,7 @@ const AnnounceMent = () => {
   return (
     <div>
       <form>
-        <div className="flex gap-5 flex-col lg:flex-row">
+        <div className="gap-5">
           <div className="p-5 shadow rounded-md w-full lg:w-48 flex items-center justify-center">
             <img
               className="w-28 h-28 border rounded-full border-green-700"
@@ -10,7 +10,7 @@ const AnnounceMent = () => {
               alt=""
             />
           </div>
-          <div className="flex gap-3 flex-col w-full">
+          <div className="flex gap-3 mt-5 flex-col lg:flex-row w-full">
             <div className="w-full">
               <label className="block text-xl font-semibold  " htmlFor="name">
                 Author Name

@@ -17,6 +17,7 @@ import Register from "./components/Public/Register.jsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AuthProvider from "./auth/AuthProvider.jsx";
 import MemberShip from "./components/Public/MemberShip.jsx";
+import ReportedComment from "./components/DashBoard/Admin/ReportedComment.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,44 +41,18 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path:'/membership',
-        element:<MemberShip/>
-      }
+        path: "/membership",
+        element: <MemberShip />,
+      },
+      {
+        path: "/post/comment/:id",
+        element: <ReportedComment />,
+      },
     ],
   },
   {
     path: "dashboard",
     element: <Dashboard />,
-    children: [
-      {
-        path: "add-post",
-        element: <AddPosts />,
-      },
-      {
-        path: "my-posts",
-        element: <MyPosts />,
-      },
-      {
-        path: "my-profile",
-        element: <MyProfile />,
-      },
-      {
-        path: "admin-profile",
-        element: <AdminProfile />,
-      },
-      {
-        path: "announcement",
-        element: <AnnounceMent />,
-      },
-      {
-        path: "manage-users",
-        element: <ManageUsers />,
-      },
-      {
-        path: "reported",
-        element: <Reported />,
-      },
-    ],
   },
 ]);
 

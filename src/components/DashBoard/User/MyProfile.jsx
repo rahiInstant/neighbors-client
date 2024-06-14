@@ -1,6 +1,8 @@
 import { FaRegComments, FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa";
 import { RiDeleteBin4Fill } from "react-icons/ri";
-const MyProfile = ({setKey}) => {
+import { Link, useNavigate } from "react-router-dom";
+const MyProfile = ({ setKey }) => {
+  const navigate = useNavigate();
   const postCard = () => {
     return (
       <div className="flex flex-col text-[#615e5e] shadow">
@@ -17,7 +19,10 @@ const MyProfile = ({setKey}) => {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <div className="p-2  w-full flex justify-center border-r">
+          <div
+            onClick={() => navigate(`/post/comment/2485215hgrtd784`)}
+            className="p-2  w-full flex justify-center border-r"
+          >
             <FaRegComments className="w-8 h-8 text-green-700 cursor-pointer hover:bg-slate-200 p-1 rounded-full" />
           </div>
           <div className="p-2  w-full flex justify-center">
@@ -50,7 +55,10 @@ const MyProfile = ({setKey}) => {
         <h1 className="text-lg italic font-medium">
           Best three post showed here. Click "show all" to see all post.
         </h1>
-        <div onClick={() => setKey('1')} className="px-5 py-2 rounded-lg bg-[#1173b4] text-lg font-medium italic text-white w-fit mt-4 cursor-pointer">
+        <div
+          onClick={() => setKey("1")}
+          className="px-5 py-2 rounded-lg bg-[#1173b4] text-lg font-medium italic text-white w-fit mt-4 cursor-pointer"
+        >
           show all
         </div>
       </div>
