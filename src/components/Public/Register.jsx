@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto mb-10">
       <div className=" p-5 mt-5  rounded-md mx-5 border">
         <div className="flex items-center justify-center flex-col bg-[url('/log.jpg')] border bg-no-repeat bg-cover h-40 rounded-lg ">
           <h1 className="text-[40px] font-semibold mt-2 text-[#f1f1f1]">
@@ -13,11 +13,17 @@ const Register = () => {
         </div>
         <form className="mt-5 sm:p-5">
           <div className="flex gap-5 lg:flex-row flex-col">
-            <div className="border rounded-full h-fit w-fit relative flex flex-col p-3 ">
-              <img className="w-44 h-44" src="/user.png" alt="" />
-              <button className="w-12 h-12 bottom-2 right-2 bg-white absolute rounded-full flex text-xl items-center justify-center gap-2 py-3 border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
-                <FaUpload />
+            <div className="flex justify-center">
+              <div className="border relative h-fit w-fit flex flex-col rounded-full">
+                <img
+                  className="w-32 lg:w-52 h-32 lg:h-52 rounded-full"
+                  src="/user.png"
+                  alt=""
+                />
+              <button className="p-2 absolute bottom-0 right-1 lg:right-8 bg-white  rounded-full flex items-center justify-center border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
+                <FaUpload className="w-4 h-4" />
               </button>
+              </div>
             </div>
             <div className="flex gap-3 flex-auto flex-col text-[#1b1a1a]">
               <div className="w-full">

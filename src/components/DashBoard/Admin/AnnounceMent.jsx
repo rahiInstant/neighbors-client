@@ -40,7 +40,7 @@ const AnnounceMent = () => {
         </div>
         <textarea
           required
-          className="outline-none border rounded-md py-4 px-5 w-full mt-2 h-[145px]"
+          className="outline-none border rounded-md py-4 px-5 w-full mt-5 h-[145px]"
           name="comment"
           rows={4}
           id=""
