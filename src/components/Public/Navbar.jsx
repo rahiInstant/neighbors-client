@@ -15,7 +15,11 @@ const Navbar = () => {
   function handleLogOut() {
     logOut()
       .then(() => successMsg("log out successfully."))
-      .catch((err) => errorMsg("something wrong."));
+      .catch((err) => {
+        const Msg = err?.message;
+        const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
+        errorMsg(actualMsg);
+      });
   }
   return (
     <nav className="relative w-full shadow bg-gray-800">
@@ -92,7 +96,7 @@ const Navbar = () => {
                   >
                     <img
                       className="w-full h-full rounded-full cursor-pointer"
-                      src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+                      src={user?.photoURL}
                       alt=""
                     />
                   </div>

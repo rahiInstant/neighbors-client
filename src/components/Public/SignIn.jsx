@@ -9,7 +9,7 @@ import useCheck from "../../Hooks/useCheck";
 import { useForm } from "react-hook-form";
 
 const SignIn = () => {
-  const { googleSignIn } = useAuth();
+  const { googleSignIn, manualSignIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const successMsg = (msg) => toast.success(msg);
@@ -17,9 +17,22 @@ const SignIn = () => {
   const [helmet, setHelmet] = useState("Neighbors | Log in");
   const check = useCheck();
   const { register, handleSubmit } = useForm();
-  const onSubmit = data => console.log(data);
-
-
+  const handleManualSignIn = (data) => {
+    const { email, password } = data;
+    manualSignIn(email, password)
+      .then(() => {
+        successMsg("Sign in successfully. Redirecting...");
+        setHelmet("Redirecting...");
+        setTimeout(() => {
+          navigate(location?.state ? location.state : "/");
+        }, 1000);
+      })
+      .catch((err) => {
+        const Msg = err?.message;
+        const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
+        errorMsg(actualMsg);
+      });
+  };
 
   function handleGoogleSignIn() {
     googleSignIn()
@@ -32,8 +45,7 @@ const SignIn = () => {
         }, 1000);
       })
       .catch((error) => {
-        // console.log(error);
-        const Msg =error?.message;
+        const Msg = error?.message;
         const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
         errorMsg(actualMsg);
       });
@@ -50,7 +62,7 @@ const SignIn = () => {
             Welcome Back !!!
           </h1>
         </div>
-        <form className="mt-5">
+        <form onSubmit={handleSubmit(handleManualSignIn)} className="mt-5">
           <div className="flex gap-3 w-full flex-col sm:flex-row text-[#1b1a1a]">
             <div className="w-full">
               <label className="block text-xl font-semibold  " htmlFor="name">
@@ -58,11 +70,12 @@ const SignIn = () => {
               </label>
 
               <input
-                id="name"
-                name="name"
+                {...register("email")}
+                id="email"
+                name="email"
                 className="py-4 px-5 mt-2 w-full text-lg rounded-md  outline-none border bg-[#ffffff] "
                 type="email"
-                placeholder="Abdur Rahaman Rahi"
+                placeholder="rahiurp20@gmail.com"
               />
             </div>
             <div className="w-full">
@@ -70,10 +83,11 @@ const SignIn = () => {
                 Password
               </label>
               <input
+                {...register("password")}
                 className="py-4 px-5 w-full mt-2 text-lg rounded-md outline-none border bg-[#fff] "
                 type="password"
-                name="email"
-                id="email"
+                name="password"
+                id="password"
                 placeholder="rahiurp20@gmail.com"
               />
             </div>

@@ -9,6 +9,7 @@ import AdminProfile from "./Admin/AdminProfile";
 import ManageUsers from "./Admin/ManageUsers";
 import Reported from "./Admin/Reported";
 import AnnounceMent from "./Admin/AnnounceMent";
+import useAuth from "../../Hooks/useAuth";
 const Dashboard = () => {
   const [mode, setMode] = useState("top");
   const [key, setKey] = useState("0");
@@ -16,6 +17,8 @@ const Dashboard = () => {
   const handleModeChange = (e) => {
     setMode(e.target.value);
   };
+  const {user} = useAuth()
+  // const {data}
   const isAdmin = false;
   const route = {
     adminRoute: [

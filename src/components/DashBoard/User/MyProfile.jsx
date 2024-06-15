@@ -7,8 +7,10 @@ import {
 } from "react-icons/fa";
 import { RiDeleteBin4Fill } from "react-icons/ri";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../../Hooks/useAuth";
 const MyProfile = ({ setKey }) => {
   const navigate = useNavigate();
+  const {user} = useAuth()
   const postCard = () => {
     return (
       <div className="flex flex-col text-[#615e5e] shadow">
@@ -44,8 +46,8 @@ const MyProfile = ({ setKey }) => {
         <div className="flex justify-center">
           <div className="border relative h-fit w-fit flex flex-col rounded-full">
             <img
-              className="w-32 lg:w-40 h-32 lg:h-40 rounded-full"
-              src="/user.png"
+              className="w-32 border p-1 lg:w-40 h-32 lg:h-40 rounded-full"
+              src={user?.photoURL}
               alt=""
             />
             <button className="p-2 absolute bottom-0 right-1 lg:right-8 bg-white  rounded-full flex items-center justify-center border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
@@ -53,8 +55,8 @@ const MyProfile = ({ setKey }) => {
             </button>
           </div>
         </div>
-        <h1 className="text-[35px] font-bold ">Abdur Rahaman Rahi</h1>
-        <p className="text-lg italic">rahiurp20@gmail.com</p>
+        <h1 className="text-[35px] font-bold ">{user?.displayName}</h1>
+        <p className="text-lg italic">{user?.email}</p>
         <div className="mt-3 py-1 px-8 bg-[#be6512] font-medium text-xs w-fit text-white rounded-full">
           silver
         </div>
