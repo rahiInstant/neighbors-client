@@ -10,16 +10,45 @@ import ManageUsers from "./Admin/ManageUsers";
 import Reported from "./Admin/Reported";
 import AnnounceMent from "./Admin/AnnounceMent";
 import useAuth from "../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import { ColorRing } from "react-loader-spinner";
+import { useForm } from "react-hook-form";
+import usePosts from "../../Hooks/usePosts";
 const Dashboard = () => {
   const [mode, setMode] = useState("top");
   const [key, setKey] = useState("0");
-  // const [route, setRoute] = useState([]);
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const {refetchPost} = usePosts()
   const handleModeChange = (e) => {
     setMode(e.target.value);
   };
-  const {user} = useAuth()
-  // const {data}
-  const isAdmin = false;
+  const { data, isPending } = useQuery({
+    queryKey: ["isUserExist", user],
+    queryFn: async () => {
+      const result = await axiosSecure.get(`/check-admin?email=${user?.email}`);
+
+      return result.data;
+    },
+    enabled: !!user,
+  });
+  if (isPending) {
+    return (
+      <div className="flex justify-center mt-5">
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="color-ring-loading"
+          wrapperStyle={{}}
+          wrapperClass="color-ring-wrapper"
+          colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+        />
+      </div>
+    );
+  }
+
   const route = {
     adminRoute: [
       { name: "Admin Profile", content: <AdminProfile /> },
@@ -62,7 +91,9 @@ const Dashboard = () => {
           <Tabs
             // defaultActiveKey="1"
             activeKey={key}
-            onTabClick={(i) => setKey(i)}
+            onTabClick={(i) => {
+              refetchPost()
+              setKey(i)}}
             tabPosition={mode}
             style={{
               height: "auto",
@@ -70,7 +101,7 @@ const Dashboard = () => {
             tabBarStyle={{
               fontWeight: "bold",
             }}
-            items={route[isAdmin ? "adminRoute" : "userRoute"].map(
+            items={route[data?.isAdmin ? "adminRoute" : "userRoute"].map(
               (item, i) => {
                 return {
                   label: item.name,

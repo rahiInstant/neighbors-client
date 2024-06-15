@@ -1,12 +1,36 @@
-import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { RxCross2 } from "react-icons/rx";
+import useAuth from "../../../Hooks/useAuth";
+import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import moment from "moment";
+
 const AddPosts = () => {
-  // const [isDrop, setIsDrop] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const option = ["education", "entertainment", "media", "football", "fire"];
+  const handlePost = (data) => {
+    const { title, tags, upVote, downVote, comment } = data;
+    axiosSecure
+      .post(`/user-post`, {
+        title,
+        tags,
+        upVote: parseInt(upVote),
+        downVote: parseInt(downVote),
+        userName: user?.displayName,
+        email: user?.email,
+        comment,
+        postingTime: moment().unix(),
+      })
+      .then((res) => console.log(res.data));
+    console.log(data);
+  };
   return (
     <div className=" ">
-      <form className="p-5 border w-full rounded-md">
+      <form
+        onSubmit={handleSubmit(handlePost)}
+        className="p-5 border w-full rounded-md"
+      >
         <div className="flex items-center gap-5">
           <div className="p-1 border border-green-700 my-5 rounded-full w-fit">
             <img
@@ -37,7 +61,7 @@ const AddPosts = () => {
               className="py-4 px-5 mt-2 w-full text-lg rounded-md  outline-none border "
               type="text"
               disabled
-              placeholder="Abdur Rahaman Rahi"
+              placeholder={user?.displayName}
             />
           </div>
           <div className="w-full">
@@ -50,7 +74,7 @@ const AddPosts = () => {
               type="email"
               name="email"
               id="email"
-              placeholder="rahiurp20@gmail.com"
+              placeholder={user?.email}
             />
           </div>
         </div>
@@ -63,6 +87,7 @@ const AddPosts = () => {
               </label>
 
               <input
+                {...register("title")}
                 id="title"
                 name="title"
                 className="py-4 px-5 mt-2 w-full text-lg rounded-md  outline-none border "
@@ -72,43 +97,9 @@ const AddPosts = () => {
               />
             </div>
             <div className="relative h-fit  border rounded-md w-full">
-              {/* <div
-                id="drop-head"
-                className="py-4 px-5 text-lg flex justify-between items-center"
-              >
-                <div>-- Tags --</div>
-                <div className="flex items-center gap-2">
-                  <div
-                    onClick={() => setIsDrop(!isDrop)}
-                    className="cursor-pointer"
-                  >
-                    <RxCross2 className="w-5 h-5 text-[#a8a7a7] hover:text-[#000]" />
-                  </div>
-                  <div
-                    onClick={() => setIsDrop(!isDrop)}
-                    className="cursor-pointer"
-                  >
-                    <IoIosArrowDown className="w-5 h-5 text-[#a8a7a7] hover:text-[#000]" />
-                  </div>
-                </div>
-              </div> */}
-              {/* <div
-                id="drop-down"
-                className={`${
-                  isDrop ? "" : "hidden"
-                } absolute p-2 border w-full rounded-md bg-slate-50 font-medium italic top-[60px]`}
-              >
-                {option.map((item, id) => (
-                  <div
-                    className="py-1 px-2 hover:bg-blue-100 rounded-md cursor-pointer"
-                    key={id}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div> */}
               <select
-                name="origin"
+                {...register("tags")}
+                name="tags"
                 required
                 className=" py-4 px-5 text-lg   appearance-none font-semibold rounded-lg outline-none w-full"
               >
@@ -133,13 +124,13 @@ const AddPosts = () => {
               Post Description
             </label>
             <textarea
+              {...register("comment")}
               required
               className="outline-none border rounded-md py-4 px-5 w-full mt-2 h-[145px]"
               name="comment"
               rows={4}
               id=""
-              maxLength={250}
-              minLength={150}
+              minLength={10}
               placeholder="write something about this spot withing 150-250 words."
             ></textarea>
           </div>
@@ -152,6 +143,7 @@ const AddPosts = () => {
             </label>
 
             <input
+              {...register("upVote")}
               id="up-vote"
               name="up-vote"
               className="py-4 px-5 mt-2 w-full text-lg rounded-md  outline-none border "
@@ -164,6 +156,7 @@ const AddPosts = () => {
               Down Vote
             </label>
             <input
+              {...register("downVote")}
               className="py-4 px-5 w-full mt-2 text-lg rounded-md outline-none border "
               type="number"
               name="down-vote"
