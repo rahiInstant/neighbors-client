@@ -4,12 +4,19 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
+import toast from "react-hot-toast";
 const Navbar = () => {
   const [open, isOpen] = useState(false);
   const [showToken, setShowToken] = useState(false);
-  //   const { user } = useAuth();
-  const user = false;
-  console.log(showToken);
+  const { user, logOut } = useAuth();
+  const successMsg = (msg) => toast.success(msg);
+  const errorMsg = (msg) => toast.error(msg);
+
+  function handleLogOut() {
+    logOut()
+      .then(() => successMsg("log out successfully."))
+      .catch((err) => errorMsg("something wrong."));
+  }
   return (
     <nav className="relative w-full shadow bg-gray-800">
       <div className="max-w-screen-2xl p-3 mx-auto">
@@ -78,15 +85,23 @@ const Navbar = () => {
                 </div>
               </div>
               {user ? (
-                <div
-                  onClick={() => setShowToken(!showToken)}
-                  className="w-10 h-10  overflow-hidden border-2 p-0.5  border-gray-400 rounded-full"
-                >
-                  <img
-                    className="w-full h-full rounded-full cursor-pointer"
-                    src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                    alt=""
-                  />
+                <div className="flex gap-3 items-center">
+                  <div
+                    onClick={() => setShowToken(!showToken)}
+                    className="w-10 h-10  overflow-hidden border-2 p-0.5  border-gray-400 rounded-full"
+                  >
+                    <img
+                      className="w-full h-full rounded-full cursor-pointer"
+                      src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
+                      alt=""
+                    />
+                  </div>
+                  <div
+                    onClick={handleLogOut}
+                    className="cursor-pointer py-2 px-5 rounded-lg bg-[#cc8379] text-lg font-semibold text-[#020f02]"
+                  >
+                    Log Out
+                  </div>
                 </div>
               ) : (
                 <Link

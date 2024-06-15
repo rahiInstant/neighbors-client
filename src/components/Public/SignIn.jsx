@@ -5,6 +5,8 @@ import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
+import useCheck from "../../Hooks/useCheck";
+import { useForm } from "react-hook-form";
 
 const SignIn = () => {
   const { googleSignIn } = useAuth();
@@ -13,18 +15,25 @@ const SignIn = () => {
   const successMsg = (msg) => toast.success(msg);
   const errorMsg = (msg) => toast.error(msg);
   const [helmet, setHelmet] = useState("Neighbors | Log in");
+  const check = useCheck();
+  const { register, handleSubmit } = useForm();
+  const onSubmit = data => console.log(data);
+
+
 
   function handleGoogleSignIn() {
     googleSignIn()
       .then((result) => {
+        check(result.user.displayName, result.user.email);
         successMsg("Sign in successfully with Google. Redirecting...");
         setHelmet("Redirecting...");
         setTimeout(() => {
           navigate(location?.state ? location.state : "/");
         }, 1000);
       })
-      .then((error) => {
-        const Msg = error.message;
+      .catch((error) => {
+        // console.log(error);
+        const Msg =error?.message;
         const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
         errorMsg(actualMsg);
       });
