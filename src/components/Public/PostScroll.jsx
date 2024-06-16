@@ -1,13 +1,14 @@
 import { IoIosArrowDown } from "react-icons/io";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa6";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import moment from 'moment'
+import moment from "moment";
 const PostScroll = () => {
   const axiosPublic = useAxiosPublic();
-  const { data } = useQuery({
+  const param = useParams();
+  const { data, refetch: postFetch } = useQuery({
     queryKey: ["all-post"],
     queryFn: async () => {
       const res = await axiosPublic.get("/all-post");
@@ -15,6 +16,16 @@ const PostScroll = () => {
     },
   });
   console.log(data);
+  const handleReaction = (reactionObj, id) => {
+    axiosPublic
+      .patch(`/update-reaction?postId=${id}`, reactionObj)
+      .then((res) => {
+        if (res.data.modifiedCount >= 1) {
+          postFetch();
+        }
+      });
+  };
+
   return (
     <div className="">
       <div className="pb-2 border-b">
@@ -50,8 +61,10 @@ const PostScroll = () => {
                   />
                 </div>
                 <div>
-                  <h1 className="font-semibold">{item.userName}</h1>
-                  <h1 className="font-light text-sm">{new Date(item.postingTime).toLocaleString()}</h1>
+                  <h1 className="font-semibold">{item.name}</h1>
+                  <h1 className="font-light text-sm">
+                    {new Date(item.postingTime).toLocaleString()}
+                  </h1>
                 </div>
               </div>
               <div className="w-8 h-8 text-xl flex items-center justify-center border rounded-full cursor-pointer">
@@ -74,16 +87,22 @@ const PostScroll = () => {
 
             <div className="italic flex justify-between mt-6">
               <div className="flex items-center gap-3">
-                <div className="flex gap-1 items-center">
+                <div
+                  onClick={() => handleReaction({ upVote: 1 }, item._id)}
+                  className="flex gap-1 items-center"
+                >
                   <FaRegThumbsUp className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
                   ({item.upVote})
                 </div>
-                <div className="flex gap-1 items-center">
+                <div
+                  onClick={() => handleReaction({ downVote: 1 }, item._id)}
+                  className="flex gap-1 items-center"
+                >
                   <FaRegThumbsDown className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
                   ({item.downVote})
                 </div>
               </div>
-              <div className="underline ">Comment(45)</div>
+              <div className="underline ">Comment(40)</div>
             </div>
           </div>
         );

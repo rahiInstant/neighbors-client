@@ -17,7 +17,6 @@ const AddPosts = () => {
         tags,
         upVote: parseInt(upVote),
         downVote: parseInt(downVote),
-        userName: user?.displayName,
         email: user?.email,
         body,
         postingTime: new Date().toUTCString(),
