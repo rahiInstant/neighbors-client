@@ -34,6 +34,7 @@ const MyProfile = ({ setKey }) => {
               title={item.title}
               upVote={item.upVote}
               downVote={item.downVote}
+              id={item._id}
             />
           );
         })}

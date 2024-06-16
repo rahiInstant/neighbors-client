@@ -13,11 +13,13 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
+import useComments from "../../Hooks/useComments";
 
 const PostDetails = () => {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const axiosPublic = useAxiosPublic();
   const param = useParams();
+  const { userComment, commentRefetch } = useComments(param.id);
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
   const { data, refetch: postFetch } = useQuery({
@@ -27,15 +29,7 @@ const PostDetails = () => {
       return result.data;
     },
   });
-  const { data: userComment, refetch: commentRefetch } = useQuery({
-    queryKey: ["user-comment"],
-    queryFn: async () => {
-      const result = await axiosPublic.get(
-        `/all-user-comment?postId=${param.id}`
-      );
-      return result.data;
-    },
-  });
+
   // console.log(userComment);
   const handleComment = (comment) => {
     axiosPublic
