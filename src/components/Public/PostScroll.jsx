@@ -5,16 +5,13 @@ import { Link, useParams } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-const PostScroll = () => {
+import { useEffect, useState } from "react";
+const PostScroll = ({data, postFetch}) => {
   const axiosPublic = useAxiosPublic();
   const param = useParams();
-  const { data, refetch: postFetch } = useQuery({
-    queryKey: ["all-post"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/all-post");
-      return res.data;
-    },
-  });
+  // const [data, setData]
+
+
   console.log(data);
   const handleReaction = (reactionObj, id) => {
     axiosPublic

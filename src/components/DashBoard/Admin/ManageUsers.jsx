@@ -1,4 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { IoMdDoneAll } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import { FaRegUser } from "react-icons/fa";
 const ManageUsers = () => {
+  const axiosSecure = useAxiosSecure();
+  const { data: user } = useQuery({
+    queryKey: ["all-users"],
+    queryFn: async () => {
+      const result = await axiosSecure.get("/all-user");
+      return result.data;
+    },
+  });
+  console.log(user);
+  const handleIsAdmin = (email) => {
+    axiosSecure
+      .patch(`/make-admin`, { email: email })
+      .then((res) => console.log(res.data));
+  };
   return (
     <div>
       <hr className="border-b-2 border-orange-500 my-3" />
@@ -14,13 +33,32 @@ const ManageUsers = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="text-center ">1</td>
-              <td className="text-left">Abdur Rahaman</td>
-              <td className="text-center">rahiurp20@gmail.com</td>
-              <td>ok</td>
-              <td>member</td>
-            </tr>
+            {user?.map((item, id) => {
+              return (
+                <tr key={id}>
+                  <td className="text-center ">{id + 1}</td>
+                  <td className="text-left">{item.name}</td>
+                  <td className="text-center">{item.email}</td>
+                  <td>
+                    <button
+                      onClick={() => handleIsAdmin(item.email)}
+                      className={`p-2 rounded-md ${
+                        item.isAdmin ? "bg-red-800" : "bg-green-800"
+                      } h-fit text-white`}
+                    >
+                      <FaRegUser />
+                    </button>
+                  </td>
+                  <td className="text-xl">
+                    {item.isMember ? (
+                      <IoMdDoneAll className="text-green-600" />
+                    ) : (
+                      <RxCross2 className="text-red-600" />
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

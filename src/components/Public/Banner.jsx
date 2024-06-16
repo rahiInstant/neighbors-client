@@ -1,6 +1,12 @@
 import { Typewriter } from "react-simple-typewriter";
-const Banner = () => {
+const Banner = ({ setSearch }) => {
   const parts = ["felling.", "emotion.", "thought."];
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const searchText = form.search.value;
+    setSearch(searchText);
+  };
   return (
     <div className="h-[700px] bg-[url('/Banner.svg')] bg-no-repeat bg-cover -z-10">
       <div className="flex max-w-screen-2xl mx-auto px-16 h-full ">
@@ -19,8 +25,9 @@ const Banner = () => {
             />
           </div>
           <div className="mt-10">
-            <form className="flex ">
+            <form onSubmit={handleSearch} className="flex ">
               <input
+                name="search"
                 type="text"
                 className="p-4  text-lg outline-none rounded-tl-lg rounded-bl-lg w-[400px]"
               />

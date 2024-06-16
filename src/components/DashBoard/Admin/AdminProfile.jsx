@@ -1,13 +1,54 @@
 import { FaComment, FaCommentAlt, FaItunesNote, FaUser } from "react-icons/fa";
 import { BsPostcard } from "react-icons/bs";
-import { PieChart, Pie, ResponsiveContainer } from "recharts";
+import { PieChart, Pie } from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import { RotatingLines } from "react-loader-spinner";
+import useAuth from "../../../Hooks/useAuth";
+import toast from "react-hot-toast";
 const AdminProfile = () => {
-  const data01 = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
+  const successMsg = (msg) => toast.success(msg);
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const { data, isPending } = useQuery({
+    queryKey: ["estimated"],
+    queryFn: async () => {
+      const result = await axiosSecure.get("/estimated-data");
+      return result.data;
+    },
+  });
+  if (isPending) {
+    return (
+      <div className="flex justify-center">
+        <RotatingLines
+          visible={true}
+          height="75"
+          width="75"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
+
+  const handleAddTag = (e) => {
+    e.preventDefault();
+    const form = e.target
+    const tag = form.tag.value;
+    console.log(tag)
+    axiosSecure
+      .post("/add-tag", { tag, email: user?.email, name: user?.displayName })
+      .then((res) => {
+        if (res?.data?.insertedId) {
+          form.reset()
+          successMsg("Add tag successfully.");
+        }
+      });
+  };
   return (
     <div>
       <div className="mt-5 flex items-center flex-col">
@@ -16,8 +57,8 @@ const AdminProfile = () => {
           src="/user.png"
           alt=""
         />
-        <h1 className="text-[35px] font-bold ">Abdur Rahaman Rahi</h1>
-        <p className="text-lg italic">rahiurp20@gmail.com</p>
+        <h1 className="text-[35px] font-bold ">{user?.displayName}</h1>
+        <p className="text-lg italic">{user?.email}</p>
         <div className="mt-3 py-1 px-8 bg-[#2d9e16] font-medium text-xs w-fit text-white rounded-full">
           admin
         </div>
@@ -26,35 +67,35 @@ const AdminProfile = () => {
         <div className="flex flex-col justify-center gap-4 w-full">
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaUser className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">10 Users</h1>
+            <h1 className="text-2xl font-bold">{data[0]?.value} Users</h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3">
             <BsPostcard className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">50 Posts</h1>
+            <h1 className="text-2xl font-bold">{data[1]?.value} Posts</h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaCommentAlt className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">123 Comments</h1>
+            <h1 className="text-2xl font-bold">{data[2]?.value} Comments</h1>
           </div>
         </div>
         <div className="p-5 border rounded-md flex items-center justify-center  w-full">
-            <PieChart width={400} height={240}>
-              <Pie
-                data={data01}
-                dataKey="value"
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                fill="#8884d8"
-              />
-            </PieChart>
+          <PieChart width={400} height={240}>
+            <Pie
+              data={data}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              fill="#8884d8"
+            />
+          </PieChart>
         </div>
       </div>
-      <form className="mt-6">
+      <form onSubmit={handleAddTag} className="mt-6">
         <div className="flex gap-5 w-full lg:flex-row flex-col">
           <input
-            id="title"
-            name="title"
+            id="tag"
+            name="tag"
             className="py-4 px-5 w-full text-lg rounded-md  outline-none border "
             type="text"
             placeholder="#education"
