@@ -51,7 +51,7 @@ const PostScroll = () => {
                 </div>
                 <div>
                   <h1 className="font-semibold">{item.userName}</h1>
-                  <h1 className="font-light text-sm">{moment(item).format('DD MMM YYYY')}</h1>
+                  <h1 className="font-light text-sm">{new Date(item.postingTime).toLocaleString()}</h1>
                 </div>
               </div>
               <div className="w-8 h-8 text-xl flex items-center justify-center border rounded-full cursor-pointer">
@@ -59,29 +59,28 @@ const PostScroll = () => {
               </div>
             </div>
             <div className="mt-3  text-2xl ">
-              What happen in our education system. It is a great scam to this.
-              We are very much{" "}
+              {item.title}
               <Link
-                to={`/details/255d4f5452d`}
+                to={`/details/${item._id}`}
                 className="text-[#1f5cdf] font-medium italic text-base cursor-pointer"
               >
                 see more...
               </Link>
             </div>
             <div className="mt-3">
-              <div className="font-medium italic">#education</div>
-              <div className="font-medium italic">#save_us_from_scam</div>
+              <div className="font-medium italic">#{item.tags}</div>
+              {/* <div className="font-medium italic">#save_us_from_scam</div> */}
             </div>
 
             <div className="italic flex justify-between mt-6">
               <div className="flex items-center gap-3">
                 <div className="flex gap-1 items-center">
                   <FaRegThumbsUp className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
-                  (29)
+                  ({item.upVote})
                 </div>
                 <div className="flex gap-1 items-center">
                   <FaRegThumbsDown className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
-                  (26)
+                  ({item.downVote})
                 </div>
               </div>
               <div className="underline ">Comment(45)</div>

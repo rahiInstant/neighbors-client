@@ -7,11 +7,48 @@ import {
   FaRegThumbsUp,
   FaShare,
 } from "react-icons/fa6";
-import { IoIosArrowDown } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import { useForm } from "react-hook-form";
+import useAuth from "../../Hooks/useAuth";
 
 const PostDetails = () => {
   const [showCommentBox, setShowCommentBox] = useState(false);
+  const axiosPublic = useAxiosPublic();
+  const param = useParams();
+  const { register, handleSubmit, reset } = useForm();
+  const { user } = useAuth();
+  const { data } = useQuery({
+    queryKey: ["post-detail"],
+    queryFn: async () => {
+      const result = await axiosPublic.get(`post-detail?postId=${param.id}`);
+      return result.data;
+    },
+  });
+  const { data: userComment } = useQuery({
+    queryKey: ["user-comment"],
+    queryFn: async () => {
+      const result = await axiosPublic.get(
+        `/all-user-comment?postId=${param.id}`
+      );
+      return result.data;
+    },
+  });
+  console.log(userComment);
+  const handleComment = (comment) => {
+    axiosPublic
+      .post(`/user-comment`, {
+        ...comment,
+        email: user?.email,
+        postId: data?._id,
+      })
+      .then((res) => {
+        reset();
+        console.log(res.data);
+      });
+  };
+  console.log(data);
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-3 mt-6 gap-6">
       <div className="bg-white shadow p-6 col-span-2 h-fit">
@@ -26,8 +63,10 @@ const PostDetails = () => {
               />
             </div>
             <div>
-              <h1 className="font-semibold">Abdur Rahaman</h1>
-              <h1 className="font-light text-sm">06 May, 2024</h1>
+              <h1 className="font-semibold">{data?.userName}</h1>
+              <h1 className="font-light text-sm">
+                {new Date(data?.postingTime).toLocaleString()}
+              </h1>
             </div>
           </div>
           <div className="w-8 h-8 text-xl flex items-center justify-center border rounded-full cursor-pointer">
@@ -35,26 +74,13 @@ const PostDetails = () => {
           </div>
         </div>
         {/* title */}
-        <div className="mt-3  text-2xl font-semibold">
-          What happen in our education system. It is a great scam to this. We
-          are very much{" "}
-        </div>
+        <div className="mt-3  text-2xl font-semibold">{data?.title}</div>
         {/* description */}
-        <div className="mt-3 text-justify">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
-          distinctio dolor ipsam. Facilis iusto beatae, vel provident
-          reprehenderit unde, totam perspiciatis, earum voluptatum nisi vitae!
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
-          distinctio dolor ipsam. Facilis iusto beatae, vel provident
-          reprehenderit unde, totam perspiciatis, earum voluptatum nisi vitae!
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste
-          distinctio dolor ipsam. Facilis iusto beatae, vel provident
-          reprehenderit unde, totam perspiciatis, earum voluptatum nisi vitae!
-        </div>
+        <div className="mt-3 text-justify">{data?.body}</div>
         {/* Tags */}
         <div className="mt-3">
-          <div className="font-medium italic">#education</div>
-          <div className="font-medium italic">#save_us_from_scam</div>
+          <div className="font-medium italic">#{data?.tags}</div>
+          {/* <div className="font-medium italic">#save_us_from_scam</div> */}
         </div>
         {/* Reaction */}
         <div className="h-[1px] w-full mb-2 mt-5 bg-slate-300"></div>
@@ -62,11 +88,11 @@ const PostDetails = () => {
           <div className="flex items-center gap-3">
             <div className="flex gap-1 items-center">
               <FaRegThumbsUp className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
-              (29)
+              ({data?.upVote})
             </div>
             <div className="flex gap-1 items-center">
               <FaRegThumbsDown className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
-              (26)
+              ({data?.downVote})
             </div>
           </div>
           <div
@@ -88,8 +114,9 @@ const PostDetails = () => {
           <div className="w-10 h-10 border p-1">
             <img className="w-full h-full" src="/user.png" alt="" />
           </div>
-          <form className="w-full">
+          <form onSubmit={handleSubmit(handleComment)} className="w-full">
             <textarea
+              {...register("comment")}
               type="text"
               rows={4}
               className="w-full outline-none bg-[#f5f5f5] p-3"
@@ -109,66 +136,28 @@ const PostDetails = () => {
         <h1 className="text-lg font-medium pb-2 border-b-2">Comments (69)</h1>
         <div className="mt-5 flex flex-col gap-6 overflow-y-scroll h-[450px]">
           {/* first comment */}
-          <div className="flex gap-3">
-            <div className="border w-8 h-8 ">
-              <img
-                className="w-full h-full rounded-full"
-                src="/user.png"
-                alt=""
-              />
-            </div>
-            <div className="bg-[#f5f5f5] p-4 flex-1">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum,
-              nemo animi eveniet, ut quos odit sunt numquam voluptate laborum
-              dolore placeat tempora nam. Dicta consequuntur quasi saepe! At,
-              molestias nisi!
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <div className="border w-8 h-8 ">
-              <img
-                className="w-full h-full rounded-full"
-                src="/user.png"
-                alt=""
-              />
-            </div>
-            <div className="bg-[#f5f5f5] p-4 flex-1">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum,
-              nemo animi eveniet, ut quos odit sunt numquam voluptate laborum
-              dolore placeat tempora nam. Dicta consequuntur quasi saepe! At,
-              molestias nisi!
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <div className="border w-8 h-8 ">
-              <img
-                className="w-full h-full rounded-full"
-                src="/user.png"
-                alt=""
-              />
-            </div>
-            <div className="bg-[#f5f5f5] p-4 flex-1">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum,
-              nemo animi eveniet, ut quos odit sunt numquam voluptate laborum
-              dolore placeat tempora nam. Dicta consequuntur quasi saepe! At,
-              molestias nisi!
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <div className="border w-8 h-8 ">
-              <img
-                className="w-full h-full rounded-full"
-                src="/user.png"
-                alt=""
-              />
-            </div>
-            <div className="bg-[#f5f5f5] p-4 flex-1">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum,
-              nemo animi eveniet, ut quos odit sunt numquam voluptate laborum
-              dolore placeat tempora nam. Dicta consequuntur quasi saepe! At,
-              molestias nisi!
-            </div>
-          </div>
+          {/* {userComment?.map((item, idx) => {
+            return (
+              <div key={idx} className="flex gap-3">
+                <div className="border w-8 h-8 ">
+                  <img
+                    className="w-full h-full rounded-full"
+                    src="/user.png"
+                    alt=""
+                  />
+                </div>
+                <div className="bg-[#f5f5f5] p-4 flex-1">
+                  <div className="font-semibold mb-1">Abdur Rahaman Rahi</div>
+                  <div>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Rerum, nemo animi eveniet, ut quos odit sunt numquam
+                    voluptate laborum dolore placeat tempora nam. Dicta
+                    consequuntur quasi saepe! At, molestias nisi!
+                  </div>
+                </div>
+              </div>
+            );
+          })} */}
         </div>
       </div>
     </div>

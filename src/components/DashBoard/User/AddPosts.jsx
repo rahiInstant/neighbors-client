@@ -5,12 +5,12 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import moment from "moment";
 
 const AddPosts = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const option = ["education", "entertainment", "media", "football", "fire"];
   const handlePost = (data) => {
-    const { title, tags, upVote, downVote, comment } = data;
+    const { title, tags, upVote, downVote, body } = data;
     axiosSecure
       .post(`/user-post`, {
         title,
@@ -19,10 +19,14 @@ const AddPosts = () => {
         downVote: parseInt(downVote),
         userName: user?.displayName,
         email: user?.email,
-        comment,
-        postingTime: moment().unix(),
+        body,
+        postingTime: new Date().toUTCString(),
       })
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        if (res?.data?.insertedId) {
+          reset();
+        }
+      });
     console.log(data);
   };
   return (
@@ -124,10 +128,10 @@ const AddPosts = () => {
               Post Description
             </label>
             <textarea
-              {...register("comment")}
+              {...register("body")}
               required
               className="outline-none border rounded-md py-4 px-5 w-full mt-2 h-[145px]"
-              name="comment"
+              name="body"
               rows={4}
               id=""
               minLength={10}
