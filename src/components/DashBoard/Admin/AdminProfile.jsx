@@ -22,8 +22,8 @@ const AdminProfile = () => {
       <div className="flex justify-center">
         <RotatingLines
           visible={true}
-          height="75"
-          width="75"
+          height="60"
+          width="60"
           color="grey"
           strokeWidth="5"
           animationDuration="0.75"

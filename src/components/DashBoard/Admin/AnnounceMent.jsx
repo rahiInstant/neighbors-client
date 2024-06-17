@@ -1,7 +1,32 @@
+import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import useAuth from "../../../Hooks/useAuth";
+import toast from "react-hot-toast";
+
 const AnnounceMent = () => {
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const successMsg = (msg) => toast.success(msg);
+  const { register, handleSubmit, reset } = useForm();
+  const handleAnnouncement = (e) => {
+    console.log(e);
+    const { title, announce } = e;
+    const announcementObj = {
+      title,
+      announce,
+      email: user?.email,
+      date: new Date().toUTCString(),
+    };
+    axiosSecure.post("/store-announcement", announcementObj).then((res) => {
+      if (res?.data?.insertedId) {
+        successMsg("Announcement successfully.");
+      }
+    });
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(handleAnnouncement)}>
         <div className="gap-5">
           <div className="p-5 shadow rounded-md w-full lg:w-48 flex items-center justify-center">
             <img
@@ -21,7 +46,7 @@ const AnnounceMent = () => {
                 name="name"
                 className="py-4 px-5 mt-2 w-full text-lg rounded-md  outline-none border "
                 type="text"
-                placeholder="Abdur Rahaman Rahi"
+                placeholder={user?.displayName}
               />
             </div>
             <div className="w-full">
@@ -29,24 +54,24 @@ const AnnounceMent = () => {
                 Title
               </label>
               <input
+                {...register("title")}
                 className="py-4 px-5 w-full mt-2 text-lg rounded-md outline-none border "
                 type="text"
-                name="email"
-                id="email"
+                name="title"
                 placeholder="Title goes here."
               />
             </div>
           </div>
         </div>
         <textarea
+          {...register("announce")}
           required
           className="outline-none border rounded-md py-4 px-5 w-full mt-5 h-[145px]"
-          name="comment"
+          name="announce"
           rows={4}
           id=""
-          maxLength={250}
-          minLength={150}
-          placeholder="write something about this spot withing 150-250 words."
+          minLength={5}
+          placeholder="write announcement here."
         ></textarea>
         <button
           className="py-4 px-5 rounded-md bg-[#115aad] mt-3 w-full text-xl font-semibold text-white"

@@ -34,6 +34,7 @@ const ReportedComment = () => {
       .post("/comment-feedback", report)
       .then((res) => console.log(res.data));
   };
+  // const result = await axiosSecure.get(`/check-report?commentId=${}`);
 
   return (
     <div className="max-w-7xl mx-auto mt-5">
@@ -76,8 +77,8 @@ const ReportedComment = () => {
                     name="feedback"
                     required
                     // disabled={
-                    //   item.email === user?.email &&
-                    //   isCommentExistInReport(item._id)
+                    // item.email === user?.email &&
+                    // isCommentExistInReport(item._id)
                     // }
                     className="py-3 px-5 text-lg appearance-none font-semibold rounded-md outline-none w-full"
                   >
@@ -93,7 +94,9 @@ const ReportedComment = () => {
                   </div>
                 </div>
                 <button
-                  // item.email === user?.email ||
+                  // l ||
+                  // disabled={item.email === user?.email}
+                  disabled={feedChange}
                   type="submit"
                   className={`py-3 px-5 text-lg font-semibold rounded-md border 
                     bg-blue-700 hover:bg-red-500

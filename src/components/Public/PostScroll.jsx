@@ -1,16 +1,28 @@
-import { IoIosArrowDown } from "react-icons/io";
+import PropTypes from "prop-types";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa6";
 import { BsThreeDots } from "react-icons/bs";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { useQuery } from "@tanstack/react-query";
-import moment from "moment";
-import { useEffect, useState } from "react";
-const PostScroll = ({data, postFetch}) => {
+import { RotatingLines } from "react-loader-spinner";
+const PostScroll = ({ data, postFetch, isPending }) => {
   const axiosPublic = useAxiosPublic();
-  const param = useParams();
-  // const [data, setData]
-
+  if (isPending) {
+    return (
+      <div className="flex justify-center">
+        <RotatingLines
+          visible={true}
+          height="60"
+          width="60"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
 
   console.log(data);
   const handleReaction = (reactionObj, id) => {
@@ -25,26 +37,6 @@ const PostScroll = ({data, postFetch}) => {
 
   return (
     <div className="">
-      <div className="pb-2 border-b">
-        {/*  */}
-        <div className="relative h-fit  border w-[250px]">
-          <select
-            name="category"
-            required
-            className=" py-4 px-5    appearance-none   outline-none w-full"
-          >
-            <option className="hidden" value="">
-              -- Category --
-            </option>
-            <option value="Most Recent">Most Recent</option>
-            <option value="Most Popular">Most Popular</option>
-            <option value="Most viewed">Most viewed</option>
-          </select>
-          <div className="absolute top-1/2 right-3 -translate-y-1/2 pointer-events-none">
-            <IoIosArrowDown className="text-2xl" />
-          </div>
-        </div>
-      </div>
       {data?.map((item, idx) => {
         return (
           <div key={idx} className="bg-white shadow p-6 mt-6">
@@ -106,6 +98,12 @@ const PostScroll = ({data, postFetch}) => {
       })}
     </div>
   );
+};
+
+PostScroll.propTypes = {
+  data: PropTypes.array,
+  postFetch: PropTypes.func,
+  isPending: PropTypes.bool,
 };
 
 export default PostScroll;

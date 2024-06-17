@@ -1,11 +1,14 @@
 import { Typewriter } from "react-simple-typewriter";
+import PropTypes from "prop-types";
 const Banner = ({ setSearch }) => {
   const parts = ["felling.", "emotion.", "thought."];
   const handleSearch = (e) => {
     e.preventDefault();
     const form = e.target;
     const searchText = form.search.value;
+    console.log(searchText)
     setSearch(searchText);
+    form.reset()
   };
   return (
     <div className="h-[700px] bg-[url('/Banner.svg')] bg-no-repeat bg-cover -z-10">
@@ -43,6 +46,10 @@ const Banner = ({ setSearch }) => {
       </div>
     </div>
   );
+};
+
+Banner.propTypes = {
+  setSearch: PropTypes.func,
 };
 
 export default Banner;

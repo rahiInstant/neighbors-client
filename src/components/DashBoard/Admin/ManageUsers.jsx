@@ -49,7 +49,7 @@ const ManageUsers = () => {
                       <FaRegUser />
                     </button>
                   </td>
-                  <td className="text-xl">
+                  <td className="text-2xl">
                     {item.isMember ? (
                       <IoMdDoneAll className="text-green-600" />
                     ) : (
