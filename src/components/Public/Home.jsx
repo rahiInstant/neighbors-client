@@ -4,13 +4,14 @@ import PostScroll from "./PostScroll";
 import Tags from "./Tags";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
 const Home = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [numberOfPage, setNumberOfPage] = useState(0);
   const axiosPublic = useAxiosPublic();
   const {
     data,
@@ -25,8 +26,11 @@ const Home = () => {
       return res.data;
     },
   });
-  const numberOfPage = Math.ceil((data ? data[0] : 0) / 10);
-  console.log();
+  useEffect(() => {
+    const number_page = Math.ceil((data ? data[0] : 0) / 10);
+    setNumberOfPage(number_page);
+  }, [data]);
+  // console.log("number of page", numberOfPage);
   const { data: announcement } = useQuery({
     queryKey: ["get-announce"],
     queryFn: async () => {
