@@ -39,21 +39,23 @@ const ManageUsers = () => {
                   <td className="text-center ">{id + 1}</td>
                   <td className="text-left">{item.name}</td>
                   <td className="text-center">{item.email}</td>
-                  <td>
+                  <td className="">
                     <button
                       onClick={() => handleIsAdmin(item.email)}
-                      className={`p-2 rounded-md ${
-                        item.isAdmin ? "bg-red-800" : "bg-green-800"
-                      } h-fit text-white`}
+                      className={`w-full flex justify-center  text-white`}
                     >
-                      <FaRegUser />
+                      <FaRegUser
+                        className={`p-2 w-8 h-8 rounded-md ${
+                          item.isAdmin ? "bg-red-800" : "bg-green-800"
+                        }`}
+                      />
                     </button>
                   </td>
                   <td className="text-2xl">
                     {item.isMember ? (
-                      <IoMdDoneAll className="text-green-600" />
+                      <IoMdDoneAll className="text-green-600 mx-auto" />
                     ) : (
-                      <RxCross2 className="text-red-600" />
+                      <RxCross2 className="text-red-600 mx-auto" />
                     )}
                   </td>
                 </tr>

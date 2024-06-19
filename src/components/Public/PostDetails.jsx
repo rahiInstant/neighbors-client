@@ -14,9 +14,11 @@ import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import useAuth from "../../Hooks/useAuth";
 import useComments from "../../Hooks/useComments";
+import toast from "react-hot-toast";
 
 const PostDetails = () => {
   const [showCommentBox, setShowCommentBox] = useState(false);
+  const errorMsg = (msg) => toast.error(msg);
   const axiosPublic = useAxiosPublic();
   const param = useParams();
   const { userComment, commentRefetch } = useComments(param.id);
@@ -32,6 +34,10 @@ const PostDetails = () => {
 
   // console.log(userComment);
   const handleComment = (comment) => {
+    if (!user) {
+      errorMsg("Please, signIn before comment.");
+      return;
+    }
     axiosPublic
       .post(`/user-comment`, {
         ...comment,
@@ -47,6 +53,10 @@ const PostDetails = () => {
   };
 
   const handleReaction = (reactionObj, id) => {
+    if (!user) {
+      errorMsg("Please, signIn before reaction.");
+      return;
+    }
     axiosPublic
       .patch(`/update-reaction?postId=${id}`, reactionObj)
       .then((res) => {
@@ -57,7 +67,7 @@ const PostDetails = () => {
   };
   // console.log(data);
   return (
-    <div className="max-w-7xl mx-auto grid grid-cols-3 mt-6 gap-6">
+    <div className="max-w-7xl mx-auto grid grid-cols-3 mt-6 gap-6 mb-10">
       <div className="bg-white shadow p-6 col-span-2 h-fit">
         <div
           onClick={() => window.history.back()}

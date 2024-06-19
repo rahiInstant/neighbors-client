@@ -15,7 +15,7 @@ const AnnounceMent = () => {
       title,
       announce,
       email: user?.email,
-      date: new Date().toUTCString(),
+      date: new Date(),
     };
     axiosSecure.post("/store-announcement", announcementObj).then((res) => {
       if (res?.data?.insertedId) {

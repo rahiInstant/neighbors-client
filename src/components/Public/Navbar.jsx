@@ -5,7 +5,8 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
-const Navbar = () => {
+import { useQueryClient } from "@tanstack/react-query";
+const Navbar = ({ announceCount }) => {
   const [open, isOpen] = useState(false);
   const [showToken, setShowToken] = useState(false);
   const { user, logOut } = useAuth();
@@ -14,7 +15,10 @@ const Navbar = () => {
 
   function handleLogOut() {
     logOut()
-      .then(() => successMsg("log out successfully."))
+      .then(() => {
+        setShowToken(false);
+        successMsg("log out successfully.");
+      })
       .catch((err) => {
         const Msg = err?.message;
         const actualMsg = Msg.slice(Msg.indexOf("/") + 1, Msg.indexOf(")"));
@@ -65,9 +69,18 @@ const Navbar = () => {
             </div>
 
             <div className="flex items-center gap-4 mt-4 lg:mt-0 relative">
-              <FaRegBell className="text-xl text-white cursor-pointer" />
+              {announceCount == 0 ? (
+                <div className="relative">
+                  <FaRegBell className="text-xl text-white cursor-pointer" />
+                  <div className="absolute w-6 h-6 bg-orange-600 rounded-full text-white flex justify-center items-center -top-2.5 -left-5">
+                    {announceCount}
+                  </div>
+                </div>
+              ) : (
+                ""
+              )}
               <div
-                className={`absolute pt-4  w-48 bg-slate-200 ${
+                className={`absolute pt-4 lg:-left-16 w-48 bg-slate-200 ${
                   showToken
                     ? "top-14 opacity-100 pointer-events-auto"
                     : "top-20 opacity-0 pointer-events-none"
@@ -83,7 +96,10 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
-                  <button className=" w-full py-3 px-5 text-left hover:bg-slate-500 hover:text-gray-100">
+                  <button
+                    onClick={handleLogOut}
+                    className=" w-full py-3 px-5 text-left hover:bg-slate-500 hover:text-gray-100"
+                  >
                     Sign Out
                   </button>
                 </div>
@@ -100,10 +116,7 @@ const Navbar = () => {
                       alt=""
                     />
                   </div>
-                  <div
-                    onClick={handleLogOut}
-                    className="cursor-pointer py-2 px-5 rounded-lg bg-[#cc8379] text-lg font-semibold text-[#020f02]"
-                  >
+                  <div className="cursor-pointer py-2 px-5 rounded-lg bg-[#cc8379] text-lg font-semibold text-[#020f02]">
                     Log Out
                   </div>
                 </div>

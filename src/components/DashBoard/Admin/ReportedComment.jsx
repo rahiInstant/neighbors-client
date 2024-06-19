@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { IoIosArrowDown } from "react-icons/io";
 import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
@@ -6,13 +5,15 @@ import useComments from "../../../Hooks/useComments";
 import { FaArrowLeft } from "react-icons/fa";
 import useAuth from "../../../Hooks/useAuth";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ReportedComment = () => {
-  const [feedChange, setFeedChange] = useState(true);
+  const [feedChange, setFeedChange] = useState([]);
   const { user } = useAuth();
   const param = useParams();
   const axiosSecure = useAxiosSecure();
-  const { userComment } = useComments(param.id);
+  const { userComment, commentRefetch } = useComments(param.id);
+  const successMsg = (msg) => toast.success(msg);
 
   const handleReportedComment = (
     data,
@@ -22,19 +23,39 @@ const ReportedComment = () => {
     emailBlock
   ) => {
     data.preventDefault();
+    const form = data.target;
+    const newFeedIds = feedChange.filter((item) => item !== commentId);
+    setFeedChange(newFeedIds);
     const report = {
-      feed: data.target.feedback.value,
+      feed: form.feedback.value,
       commentId,
       postId,
       emailBlock,
       emailComment,
     };
+
     console.log(report);
-    axiosSecure
-      .post("/comment-feedback", report)
-      .then((res) => console.log(res.data));
+    axiosSecure.post("/comment-feedback", report).then((res) => {
+      if (res.data.insertedId) {
+        form.reset();
+        commentRefetch();
+        successMsg("Successfully submitted report.");
+      }
+    });
   };
+  useEffect(() => {
+    console.log(feedChange);
+  }, [feedChange]);
   // const result = await axiosSecure.get(`/check-report?commentId=${}`);
+  function isDisable(isExistInReport, commenterEmail) {
+    if (commenterEmail == user.email) {
+      return true;
+    } else if (isExistInReport) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <div className="max-w-7xl mx-auto mt-5">
@@ -45,8 +66,14 @@ const ReportedComment = () => {
         <FaArrowLeft />
       </div>
       <div className="flex flex-col gap-2">
+        {userComment?.length == 0 ? (
+          <div className="flex items-center justify-center px-4 py-8 border rounded-md text-center mx-5">
+            no comment yet!!!
+          </div>
+        ) : (
+          ""
+        )}
         {userComment?.map((item, idx) => {
-          // console.log(!(item.email === user?.email))
           return (
             <div
               key={idx}
@@ -59,7 +86,6 @@ const ReportedComment = () => {
                 {item.comment}
               </div>
               <form
-                // onSubmit={handleSubmit()}
                 onSubmit={(data) =>
                   handleReportedComment(
                     data,
@@ -73,20 +99,17 @@ const ReportedComment = () => {
               >
                 <div className="relative h-fit  border rounded-md w-full">
                   <select
-                    onChange={() => setFeedChange(false)}
+                    onChange={() => setFeedChange([...feedChange, item._id])}
                     name="feedback"
                     required
-                    // disabled={
-                    // item.email === user?.email &&
-                    // isCommentExistInReport(item._id)
-                    // }
+                    disabled={isDisable(item.isExistInReport, item.email)}
                     className="py-3 px-5 text-lg appearance-none font-semibold rounded-md outline-none w-full"
                   >
                     <option className="hidden" value="">
                       -- feedback --
                     </option>
-                    <option value="Hate-speech">Hate speech</option>
-                    <option value="delete-comment">Vulnerable</option>
+                    <option value="hate-speech">Hate speech</option>
+                    <option value="vulnerable">Vulnerable</option>
                     <option value="bla-bla-bla">bla-bla-bla</option>
                   </select>
                   <div className="absolute top-1/2 right-3 -translate-y-1/2 pointer-events-none">
@@ -94,13 +117,14 @@ const ReportedComment = () => {
                   </div>
                 </div>
                 <button
-                  // l ||
-                  // disabled={item.email === user?.email}
-                  disabled={feedChange}
+                  disabled={!feedChange.includes(item._id)}
                   type="submit"
-                  className={`py-3 px-5 text-lg font-semibold rounded-md border 
-                    bg-blue-700 hover:bg-red-500
-                   text-white  duration-200 cursor-pointer`}
+                  className={`py-3 px-5 text-lg font-semibold rounded-md border ${
+                    feedChange.includes(item._id)
+                      ? "bg-blue-700 hover:bg-red-500 cursor-pointer"
+                      : "bg-slate-400"
+                  } 
+                   text-white  duration-200`}
                 >
                   feedback
                 </button>

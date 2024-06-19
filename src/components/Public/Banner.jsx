@@ -32,6 +32,7 @@ const Banner = ({ setSearch }) => {
               <input
                 name="search"
                 type="text"
+                placeholder="Search by tag without (#): media"
                 className="p-4  text-lg outline-none rounded-tl-lg rounded-bl-lg w-[400px]"
               />
               <input

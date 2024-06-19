@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import useCheck from "../../Hooks/useCheck";
 import { useForm } from "react-hook-form";
+import useBanUserCheck from "../../Hooks/useBanUserCheck";
 
 const SignIn = () => {
   const { googleSignIn, manualSignIn } = useAuth();
@@ -17,10 +18,19 @@ const SignIn = () => {
   const [helmet, setHelmet] = useState("Neighbors | Log in");
   const check = useCheck();
   const { register, handleSubmit } = useForm();
-  const handleManualSignIn = (data) => {
+  const banUserCheck = useBanUserCheck();
+  const handleManualSignIn = async (data) => {
     const { email, password } = data;
+    // const isBan = await banUserCheck(email);
+    // console.log(isBan, email, password);
+    // console.log('clicked')
+    // if (isBan?.banUser) {
+    //   errorMsg(`You are banned for one month. ${isBan?.leftDay} days left.`);
+    //   return;
+    // }
     manualSignIn(email, password)
-      .then(() => {
+      .then((result) => {
+        check(result.user.displayName, result.user.email);
         successMsg("Sign in successfully. Redirecting...");
         setHelmet("Redirecting...");
         setTimeout(() => {

@@ -19,7 +19,7 @@ const AddPosts = () => {
         downVote: parseInt(downVote),
         email: user?.email,
         body,
-        postingTime: new Date().toUTCString(),
+        postingTime: new Date(),
       })
       .then((res) => {
         if (res?.data?.insertedId) {

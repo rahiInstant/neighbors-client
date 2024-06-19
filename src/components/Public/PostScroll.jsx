@@ -91,7 +91,7 @@ const PostScroll = ({ data, postFetch, isPending }) => {
                   ({item.downVote})
                 </div>
               </div>
-              <div className="underline ">Comment(40)</div>
+              <div className="underline ">Comment({item.commentCount})</div>
             </div>
           </div>
         );

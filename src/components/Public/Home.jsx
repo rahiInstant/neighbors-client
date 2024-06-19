@@ -5,20 +5,22 @@ import Tags from "./Tags";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import Navbar from "./Navbar";
 
 const Home = () => {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
+  const [sort, setSort] = useState(false);
   const axiosPublic = useAxiosPublic();
   const {
     data,
     refetch: postFetch,
     isPending,
   } = useQuery({
-    queryKey: ["all-post", search],
+    queryKey: ["all-post", search, sort],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/all-post?search=${search}`);
+      const res = await axiosPublic.get(
+        `/all-post?search=${search}&sort=${sort}`
+      );
       return res.data;
     },
   });
@@ -32,6 +34,7 @@ const Home = () => {
 
   return (
     <div>
+      {/* <Navbar announceCount={announcement?.length}/> */}
       <Banner setSearch={setSearch} />
       <div className="mt-20 max-w-screen-xl mx-auto mb-20">
         <div className="grid grid-cols-4 mt-5 gap-6">
@@ -39,24 +42,19 @@ const Home = () => {
             <Anouncement data={announcement} />
           </div>
           <div className="col-span-2">
-            <div className="pb-2 border-b">
+            <div className="pb-2 border-b flex items-center gap-2 text-center">
               {/*  */}
-              <div className="relative h-fit  border w-[250px]">
-                <select
-                  name="category"
-                  required
-                  className=" py-4 px-5    appearance-none   outline-none w-full"
-                >
-                  <option className="hidden" value="">
-                    -- Category --
-                  </option>
-                  <option value="Most Recent">Most Recent</option>
-                  <option value="Most Popular">Most Popular</option>
-                  <option value="Most viewed">Most viewed</option>
-                </select>
-                <div className="absolute top-1/2 right-3 -translate-y-1/2 pointer-events-none">
-                  <IoIosArrowDown className="text-2xl" />
-                </div>
+              <div
+                onClick={() => setSort(!sort)}
+                className="px-3 py-2 cursor-pointer bg-[#1e81c4] text-white w-full"
+              >
+                Sort by Popularity
+              </div>
+              <div
+                onClick={() => setSearch("")}
+                className="px-3 py-2 cursor-pointer bg-[#1e81c4] text-white w-full"
+              >
+                All Post
               </div>
             </div>
             <PostScroll

@@ -10,7 +10,7 @@ const Tags = ({setSearch}) => {
         {tags?.map((item, idx) => {
           return (
             <div
-              // onClick={() => setSearch(item)}
+              onClick={() => setSearch(item.tag)}
               key={idx}
               className="font-medium bg-[#ffc49c71] w-fit py-1 px-3 rounded-full cursor-pointer"
             >

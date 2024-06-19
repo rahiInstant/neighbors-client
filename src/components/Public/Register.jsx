@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { updateProfile } from "firebase/auth";
 import auth from "../../auth/firebase.init";
+import useBanUserCheck from "../../Hooks/useBanUserCheck";
 
 const Register = () => {
   const { createUser } = useAuth();
@@ -19,8 +20,14 @@ const Register = () => {
   const [helmet, setHelmet] = useState("Neighbors | Register");
   const check = useCheck();
   const { register, handleSubmit } = useForm();
-  const handleCreateUser = (data) => {
+  const banUserCheck = useBanUserCheck();
+  const handleCreateUser = async (data) => {
     const { name, email, password } = data;
+    const isBan = await banUserCheck(email);
+    if (isBan?.banUser) {
+      errorMsg(`You are banned for one month. ${isBan?.leftDay} days left.`);
+      return;
+    }
     createUser(email, password)
       .then(() => {
         updateProfile(auth.currentUser, { displayName: name }).then(() => {
