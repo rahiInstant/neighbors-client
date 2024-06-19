@@ -3,12 +3,14 @@ import useAuth from "../../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import moment from "moment";
+import useTags from "../../../Hooks/useTags";
 
 const AddPosts = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const option = ["education", "entertainment", "media", "football", "fire"];
+  const {tags, tagPending} = useTags()
+  // const option = ["education", "entertainment", "media", "football", "fire"];
   const handlePost = (data) => {
     const { title, tags, upVote, downVote, body } = data;
     axiosSecure
@@ -104,15 +106,15 @@ const AddPosts = () => {
                 {...register("tags")}
                 name="tags"
                 required
-                className=" py-4 px-5 text-lg   appearance-none font-semibold rounded-lg outline-none w-full"
+                className=" py-4 px-5 text-lg appearance-none font-semibold rounded-lg outline-none w-full"
               >
                 <option className="hidden" value="">
                   -- Tags --
                 </option>
-                {option.map((item, idx) => {
+                {tags?.map((item, idx) => {
                   return (
-                    <option key={idx} value={item}>
-                      #{item}
+                    <option key={idx} value={item.tag}>
+                      #{item.tag}
                     </option>
                   );
                 })}

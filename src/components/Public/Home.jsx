@@ -10,20 +10,23 @@ import Navbar from "./Navbar";
 const Home = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const axiosPublic = useAxiosPublic();
   const {
     data,
     refetch: postFetch,
     isPending,
   } = useQuery({
-    queryKey: ["all-post", search, sort],
+    queryKey: ["all-post", search, sort, currentPage],
     queryFn: async () => {
       const res = await axiosPublic.get(
-        `/all-post?search=${search}&sort=${sort}`
+        `/all-post?search=${search}&sort=${sort}&currentPage=${currentPage}`
       );
       return res.data;
     },
   });
+  const numberOfPage = Math.ceil((data ? data[0] : 0) / 10);
+  console.log();
   const { data: announcement } = useQuery({
     queryKey: ["get-announce"],
     queryFn: async () => {
@@ -34,7 +37,6 @@ const Home = () => {
 
   return (
     <div>
-      {/* <Navbar announceCount={announcement?.length}/> */}
       <Banner setSearch={setSearch} />
       <div className="mt-20 max-w-screen-xl mx-auto mb-20">
         <div className="grid grid-cols-4 mt-5 gap-6">
@@ -58,9 +60,12 @@ const Home = () => {
               </div>
             </div>
             <PostScroll
-              data={data}
+              data={data ? data[1] : []}
               postFetch={postFetch}
               isPending={isPending}
+              numberOfPage={numberOfPage}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
           <div>

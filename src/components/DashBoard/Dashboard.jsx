@@ -74,7 +74,7 @@ const Dashboard = () => {
         </Link>
         <div className="mt-6 flex items-center justify-center flex-col bg-[url('/Snow.svg')] h-40 rounded-lg ">
           <h1 className="text-[40px] font-semibold mt-2 text-white">
-            Welcome Back, Rahi
+            Welcome Back, {user?.displayName}
           </h1>
         </div>
         <div>

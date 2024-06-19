@@ -12,7 +12,7 @@ const Anouncement = ({ data }) => {
                 <h1 className="font-semibold">
                   {item.title}
                 </h1>
-                <p>{item.announce.substring(0,400)}...</p>
+                <p>{item.announce.substring(0,200)}...</p>
                 <h1 className="italic font-medium mt-1">{new Date(item.date).toLocaleString()}</h1>
               </div>
               <hr />

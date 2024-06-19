@@ -87,7 +87,7 @@ const Navbar = ({ announceCount }) => {
                 } duration-150`}
               >
                 <h1 className="font-medium text-center p-2">
-                  Abdur Rahamn Rahi
+                  {user?.displayName}
                 </h1>
                 <div className="">
                   <Link
@@ -112,11 +112,14 @@ const Navbar = ({ announceCount }) => {
                   >
                     <img
                       className="w-full h-full rounded-full cursor-pointer"
-                      src={user?.photoURL}
+                      src={user?.photoURL?user?.photoURL:'/user.png'}
                       alt=""
                     />
                   </div>
-                  <div className="cursor-pointer py-2 px-5 rounded-lg bg-[#cc8379] text-lg font-semibold text-[#020f02]">
+                  <div
+                    onClick={handleLogOut}
+                    className="cursor-pointer py-2 px-5 rounded-lg bg-[#cc8379] text-lg font-semibold text-[#020f02]"
+                  >
                     Log Out
                   </div>
                 </div>

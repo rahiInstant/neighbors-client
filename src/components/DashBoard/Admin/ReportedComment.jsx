@@ -58,7 +58,7 @@ const ReportedComment = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto mt-5">
+    <div className="max-w-7xl mx-auto mt-5b mb-10">
       <div
         onClick={() => window.history.back()}
         className="w-10 h-10 mb-6 mx-5 hover:bg-slate-200 rounded-full border flex justify-center items-center duration-300 cursor-pointer"

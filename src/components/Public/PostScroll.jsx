@@ -4,7 +4,16 @@ import { BsThreeDots } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { RotatingLines } from "react-loader-spinner";
-const PostScroll = ({ data, postFetch, isPending }) => {
+import { useState } from "react";
+const PostScroll = ({
+  data,
+  postFetch,
+  isPending,
+  numberOfPage,
+  currentPage,
+  setCurrentPage,
+}) => {
+  const pages = [...Array(numberOfPage).keys()];
   const axiosPublic = useAxiosPublic();
   if (isPending) {
     return (
@@ -26,6 +35,9 @@ const PostScroll = ({ data, postFetch, isPending }) => {
 
   console.log(data);
   const handleReaction = (reactionObj, id) => {
+    // console.log(data.length)
+    // console.log(numberOfPage)
+    // console.log(pages)
     axiosPublic
       .patch(`/update-reaction?postId=${id}`, reactionObj)
       .then((res) => {
@@ -34,6 +46,7 @@ const PostScroll = ({ data, postFetch, isPending }) => {
         }
       });
   };
+  console.log("current page", currentPage);
 
   return (
     <div className="">
@@ -96,6 +109,70 @@ const PostScroll = ({ data, postFetch, isPending }) => {
           </div>
         );
       })}
+      <div className="mt-6 flex flex-wrap justify-center gap-3 font-medium">
+        <button
+          className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50"
+          onClick={() => {
+            if (currentPage > 0) {
+              setCurrentPage(currentPage - 1);
+            }
+          }}
+        >
+          prev
+        </button>
+        {/* <div className="flex gap-1">
+          {[currentPage,
+            [...Array(2).keys()].map((item) => {
+              const next = numberOfPage - currentPage;
+              const prev = 3 - (next+1);
+              if(next>=3) {
+                return currentPage+(item+1)
+              }              
+            }),
+          ].map((item, idx) => {
+            return (
+              <button
+                onClick={() => setCurrentPage(item)}
+                key={idx}
+                className={`h-10 min-w-10 px-3 py-2 border rounded-md hover:bg-gray-50 ${
+                  currentPage == item ? "border-green-600" : ""
+                }`}
+              >
+                {item}
+              </button>
+            );
+          })}
+          <button className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50">
+            ...
+          </button>
+          <button className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50">
+            {numberOfPage - 1}
+          </button>
+        </div> */}
+        {pages.map((item, idx) => {
+          return (
+            <button
+              onClick={() => setCurrentPage(item)}
+              key={idx}
+              className={`h-10 min-w-10 px-3 py-2 border rounded-md hover:bg-gray-50 ${
+                currentPage == item ? "border-green-600 border-2" : ""
+              }`}
+            >
+              {item + 1}
+            </button>
+          );
+        })}
+        <button
+          className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50"
+          onClick={() => {
+            if (currentPage < numberOfPage - 1) {
+              setCurrentPage(currentPage + 1);
+            }
+          }}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

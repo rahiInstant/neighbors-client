@@ -107,6 +107,7 @@ const Reported = () => {
       })
       .then((res) => {
         if (res.status == 200) {
+          // console.log(res.data)
           reportFetchAgain()
           successMsg(`"${action}" action complete successfully.`);
         }

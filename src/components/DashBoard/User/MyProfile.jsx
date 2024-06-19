@@ -12,7 +12,7 @@ const MyProfile = ({ setKey }) => {
           <div className="border relative h-fit w-fit flex flex-col rounded-full">
             <img
               className="w-32 border p-1 lg:w-40 h-32 lg:h-40 rounded-full"
-              src={user?.photoURL}
+              src={user?.photoURL?user?.photoURL:'/user.png'}
               alt=""
             />
             <button className="p-2 absolute bottom-0 right-1 lg:right-8 bg-white  rounded-full flex items-center justify-center border text-[#15701a] border-[#15701a]  font-medium hover:bg-[#15701a] hover:text-white duration-150">
@@ -39,20 +39,26 @@ const MyProfile = ({ setKey }) => {
           );
         })}
       </div>
-      <div className="flex justify-between items-center mt-2">
-        <h1 className="text-lg italic font-medium">
-          Best three post showed here. Click "show all" to see all post.
-        </h1>
-        <div
-          onClick={() => {
-            refetchPost();
-            setKey("1");
-          }}
-          className="px-5 py-2 rounded-lg bg-[#1173b4] text-lg font-medium italic text-white w-fit mt-4 cursor-pointer"
-        >
-          show all
+      {data?.length == 0 ? (
+        <div className="border px-5 py-4 rounded-md w-full h-40 flex items-center justify-center text-xl font-medium">
+          No Post Yet!!!
         </div>
-      </div>
+      ) : (
+        <div className="flex justify-between items-center mt-2">
+          <h1 className="text-lg italic font-medium">
+            Best three post showed here. Click "show all" to see all post.
+          </h1>
+          <div
+            onClick={() => {
+              refetchPost();
+              setKey("1");
+            }}
+            className="px-5 py-2 rounded-lg bg-[#1173b4] text-lg font-medium italic text-white w-fit mt-4 cursor-pointer"
+          >
+            show all
+          </div>
+        </div>
+      )}
     </div>
   );
 };
