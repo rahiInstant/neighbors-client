@@ -15,25 +15,14 @@ import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { ColorRing } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import usePosts from "../../Hooks/usePosts";
+import useUserInfo from "../../Hooks/useUserInfo";
 const Dashboard = () => {
-  const [mode, setMode] = useState("top");
   const [key, setKey] = useState("0");
-  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const {refetchPost} = usePosts()
-  const handleModeChange = (e) => {
-    setMode(e.target.value);
-  };
-  const { data, isPending } = useQuery({
-    queryKey: ["isUserExist", user],
-    queryFn: async () => {
-      const result = await axiosSecure.get(`/check-admin?email=${user?.email}`);
-
-      return result.data;
-    },
-    enabled: !!user,
-  });
-  if (isPending) {
+  const { refetchPost } = usePosts();
+  const { userInfo, userDataPending } = useUserInfo();
+  console.log(userInfo);
+  if (userDataPending) {
     return (
       <div className="flex justify-center mt-5">
         <ColorRing
@@ -73,14 +62,15 @@ const Dashboard = () => {
           <FaArrowLeft />
         </Link>
         <div className="mt-6 flex items-center justify-center flex-col bg-[url('/Snow.svg')] h-40 rounded-lg ">
-          <h1 className="text-[40px] font-semibold mt-2 text-white">
-            Welcome Back, {user?.displayName}
+          <h1 className=" font-semibold mt-2 text-white text-center">
+            <span className="text-[40px]">Welcome Back,</span>
+            <br className="lg:hidden"/> <span className="text-[30px] lg:text-[40px] max-lg:italic">{user?.displayName}</span>
           </h1>
         </div>
         <div>
           <Radio.Group
-            onChange={handleModeChange}
-            value={mode}
+            // onChange={handleModeChange}
+            // value={mode}
             style={{
               marginBottom: 8,
             }}
@@ -92,16 +82,17 @@ const Dashboard = () => {
             // defaultActiveKey="1"
             activeKey={key}
             onTabClick={(i) => {
-              refetchPost()
-              setKey(i)}}
-            tabPosition={mode}
+              refetchPost();
+              setKey(i);
+            }}
+            // tabPosition={mode}
             style={{
               height: "auto",
             }}
             tabBarStyle={{
               fontWeight: "bold",
             }}
-            items={route[data?.isAdmin ? "adminRoute" : "userRoute"].map(
+            items={route[userInfo?.isAdmin ? "adminRoute" : "userRoute"].map(
               (item, i) => {
                 return {
                   label: item.name,

@@ -10,21 +10,35 @@ import {
 import { useEffect, useState } from "react";
 import auth from "./firebase.init";
 import { AuthContext } from "./AuthContext";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
+  const axiosSecure = useAxiosSecure();
   useEffect(() => {
     const unSubscribed = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        const userEmail = { email: currentUser.email };
+        axiosSecure
+          .post("/jwt", userEmail)
+          .then((res) =>
+            {
+              console.log(res)
+              localStorage.setItem("access_token", res.data.access_token)}
+          );
+      } else {
+        localStorage.removeItem("access_token");
+      }
       setLoading(false);
     });
     return () => {
       unSubscribed();
     };
-  }, []);
+  }, [axiosSecure]);
 
   console.log(user);
 

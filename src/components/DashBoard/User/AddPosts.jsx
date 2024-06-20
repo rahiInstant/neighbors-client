@@ -4,12 +4,16 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import moment from "moment";
 import useTags from "../../../Hooks/useTags";
+import useUserInfo from "../../../Hooks/useUserInfo";
+import { useNavigate } from "react-router-dom";
 
 const AddPosts = () => {
   const { register, handleSubmit, reset } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const {tags, tagPending} = useTags()
+  const navigate = useNavigate()
+  const { tags, tagPending } = useTags();
+  const { userInfo, userDataPending } = useUserInfo();
   // const option = ["education", "entertainment", "media", "football", "fire"];
   const handlePost = (data) => {
     const { title, tags, upVote, downVote, body } = data;
@@ -31,13 +35,10 @@ const AddPosts = () => {
     console.log(data);
   };
   return (
-    <div className=" ">
-      <form
-        onSubmit={handleSubmit(handlePost)}
-        className="p-5 border w-full rounded-md"
-      >
-        <div className="flex items-center gap-5">
-          <div className="p-1 border border-green-700 my-5 rounded-full w-fit">
+    <div className="p-5 border rounded-md">
+      <div className="flex justify-between flex-col lg:flex-row gap-5 pb-3 border-b-2 border-dashed">
+        <div className="flex flex-col lg:flex-row items-center lg:gap-5">
+          <div className="p-1 border border-green-700 rounded-full w-fit">
             <img
               className="w-28 h-28 rounded-full border border-green-700"
               src="/user.png"
@@ -45,7 +46,7 @@ const AddPosts = () => {
             />
           </div>
           <div>
-            <h1 className="text-[40px] font-medium text-[#2e2c2c]">
+            <h1 className="text-[30px] lg:text-[40px] font-medium text-[#2e2c2c] text-center lg:text-left">
               Add Your Post
             </h1>
             <p className="text-xl italic">
@@ -53,6 +54,22 @@ const AddPosts = () => {
             </p>
           </div>
         </div>
+        {userInfo?.isMember ? (
+          ""
+        ) : (
+          <div className="flex flex-row lg:flex-col gap-3 justify-center w-full lg:w-auto">
+            <div className="flex items-center flex-col leading-[25px] font-semibold border px-3 py-2 rounded-md w-full lg:w-auto">
+              <div className="text-[30px]">{5 - userInfo.postCount}</div>{" "}
+              <div className="text-xl">free post left</div>
+            </div>
+            <div onClick={() => navigate('/membership')} className="cursor-pointer bg-green-700 w-full lg:w-auto text-white  hover:bg-green-800 duration-500 px-3 py-2 rounded-md flex flex-col items-center">
+              <div className="font-medium">Get MemberShip</div>
+              <div className="italic">to get unlimited post</div>
+            </div>
+          </div>
+        )}
+      </div>
+      <form onSubmit={handleSubmit(handlePost)} className=" w-full mt-3">
         {/* first part */}
         <div className="flex gap-5 w-full flex-col sm:flex-row ">
           <div className="w-full">
@@ -171,6 +188,7 @@ const AddPosts = () => {
           </div>
         </div>
         <button
+          disabled={userInfo?.isMember ? false : userInfo.postCount >= 5}
           className="py-4 px-5 rounded-md bg-[#115aad] mt-5 w-full text-xl font-semibold text-white"
           type="submit"
         >

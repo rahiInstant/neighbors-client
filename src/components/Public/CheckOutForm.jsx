@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 const CheckOutForm = () => {
-  const stipe = useStripe();
+  const stripe = useStripe();
   const element = useElements();
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
@@ -19,27 +19,43 @@ const CheckOutForm = () => {
   const errorMsg = (msg) => toast.error(msg);
   const [error, setError] = useState("");
   const [TrnxId, setTrnxId] = useState("");
-  const [clientSecret, setClientSecret] = useState("");
+  const [userData, setUserData] = useState("");
   const [subscriptionForTime, setSubscriptionForTime] = useState(0);
 
+  // const { data: userData } = useQuery({
+  //   queryKey: ["orderData", subscriptionForTime],
+  //   queryFn: async () => {
+  //     const result = await axiosSecure.post("/create-payment-intent", {
+  //       pay: subscriptionForTime * 3,
+  //     });
+  //     return result.data;
+  //   },
+  //   enabled: subscriptionForTime > 0,
+  // });
+  // console.log(userData)
   const handleOnChange = (e) => {
     const payAmount = parseInt(e.target.value) * 3;
+    console.log(payAmount);
     setSubscriptionForTime(e.target.value);
     axiosSecure
       .post("/create-payment-intent", { pay: payAmount })
       .then((res) => {
         if (res.status == 200) {
-          setClientSecret(res.data);
+          setUserData(res?.data);
         }
         console.log(res.data);
       });
   };
   async function handleSubmitPay(e) {
     e.preventDefault();
-    if (!stipe || !element) return;
+    if(!user) {
+      errorMsg('Please Login before getting membership.')
+      return
+    }
+    if (!stripe || !element) return;
     const card = element.getElement(CardElement);
     if (card == null) return;
-    const { error, paymentMethod } = await stipe.createPaymentMethod({
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
@@ -50,8 +66,9 @@ const CheckOutForm = () => {
       setError("");
     }
     console.log("payment method", error ? error : paymentMethod);
+    console.log(userData?.clientSecret);
     const { paymentIntent, error: transactionError } =
-      await stipe.confirmCardPayment(clientSecret, {
+      await stripe.confirmCardPayment(userData?.clientSecret, {
         payment_method: {
           card: card,
           billing_details: {
@@ -60,6 +77,7 @@ const CheckOutForm = () => {
           },
         },
       });
+    console.log(paymentIntent);
     if (transactionError) {
       console.log("Transaction Error", transactionError);
       setError(transactionError.message);
@@ -71,11 +89,8 @@ const CheckOutForm = () => {
         const payment = {
           email: user?.email,
           payAmount: subscriptionForTime * 3,
-          subscriptionFor: subscriptionForTime,
-          subscriptionEndDate: new Date(
-            new Date().setMonth(new Date().getMonth() + 1)
-          ),
-          transactionId: TrnxId,
+          subscriptionFor: subscriptionForTime*30,
+          transactionId: paymentIntent.id,
         };
         axiosSecure
           .post("/payment", payment)
@@ -92,6 +107,7 @@ const CheckOutForm = () => {
       <div className="w-full flex items-center gap-4">
         <div className="relative h-fit  border rounded-md w-full">
           <select
+            // onChange={(e) => setSubscriptionForTime(parseInt(e.target.value))}
             onChange={handleOnChange}
             name="subscription"
             required
@@ -129,7 +145,7 @@ const CheckOutForm = () => {
         />
       </div>
       <button
-        disabled={!stipe || !clientSecret}
+        disabled={!stripe || !userData}
         className="py-3 px-5 w-full bg-[#1f89df] rounded-lg mt-3 text-lg font-medium text-[#f1f1f1]"
         type="submit"
       >
