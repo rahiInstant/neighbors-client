@@ -3,10 +3,10 @@ import useAuth from "./useAuth";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://neighbors-server.vercel.app",
   withCredentials: true,
 });
-
+// http://localhost:5000
 const useAxiosSecure = () => {
   const auth = useAuth();
   const signOut = auth?.logOut;
@@ -14,8 +14,8 @@ const useAxiosSecure = () => {
   axiosSecure.interceptors.request.use(
     function (config) {
       const token = localStorage.getItem("access_token");
-      console.log(token);
-      config.headers.authorization = `Bearer_${token}`;
+      // console.log(token);
+      config.headers.authorization = `Bearer ${token}`;
       return config;
     },
     function (error) {
@@ -24,7 +24,7 @@ const useAxiosSecure = () => {
   );
   axiosSecure.interceptors.response.use(
     function (response) {
-      console.log(response);
+      // console.log(response);
       return response;
     },
     async function (error) {

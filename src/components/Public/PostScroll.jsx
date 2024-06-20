@@ -33,11 +33,8 @@ const PostScroll = ({
     );
   }
 
-  console.log(data);
+  // console.log(data);
   const handleReaction = (reactionObj, id) => {
-    // console.log(data.length)
-    // console.log(numberOfPage)
-    // console.log(pages)
     axiosPublic
       .patch(`/update-reaction?postId=${id}`, reactionObj)
       .then((res) => {
@@ -46,7 +43,7 @@ const PostScroll = ({
         }
       });
   };
-  console.log("current page", currentPage);
+  // console.log("current page", currentPage);
 
   return (
     <div className="">
@@ -69,11 +66,11 @@ const PostScroll = ({
                   </h1>
                 </div>
               </div>
-              <div className="w-8 h-8 text-xl flex items-center justify-center border rounded-full cursor-pointer">
+              {/* <div className="w-8 h-8 text-xl flex items-center justify-center border rounded-full cursor-pointer">
                 <BsThreeDots />
-              </div>
+              </div> */}
             </div>
-            <div className="mt-3  text-2xl ">
+            <div className="mt-3 text-lg sm:text-2xl ">
               {item.title}
               <Link
                 to={`/details/${item._id}`}
@@ -87,7 +84,7 @@ const PostScroll = ({
               {/* <div className="font-medium italic">#save_us_from_scam</div> */}
             </div>
 
-            <div className="italic flex justify-between mt-6">
+            <div className=" flex flex-col max-sm:flex-row justify-between mt-6">
               <div className="flex items-center gap-3">
                 <div
                   onClick={() => handleReaction({ upVote: 1 }, item._id)}
@@ -104,7 +101,7 @@ const PostScroll = ({
                   ({item.downVote})
                 </div>
               </div>
-              <div className="underline ">Comment({item.commentCount})</div>
+              <div className="mt-2 md:mt-0 font-medium md:font-normal">Comment({item.commentCount})</div>
             </div>
           </div>
         );
@@ -120,35 +117,6 @@ const PostScroll = ({
         >
           prev
         </button>
-        {/* <div className="flex gap-1">
-          {[currentPage,
-            [...Array(2).keys()].map((item) => {
-              const next = numberOfPage - currentPage;
-              const prev = 3 - (next+1);
-              if(next>=3) {
-                return currentPage+(item+1)
-              }              
-            }),
-          ].map((item, idx) => {
-            return (
-              <button
-                onClick={() => setCurrentPage(item)}
-                key={idx}
-                className={`h-10 min-w-10 px-3 py-2 border rounded-md hover:bg-gray-50 ${
-                  currentPage == item ? "border-green-600" : ""
-                }`}
-              >
-                {item}
-              </button>
-            );
-          })}
-          <button className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50">
-            ...
-          </button>
-          <button className="h-10 px-3 py-2 border rounded-md hover:bg-gray-50">
-            {numberOfPage - 1}
-          </button>
-        </div> */}
         {pages.map((item, idx) => {
           return (
             <button

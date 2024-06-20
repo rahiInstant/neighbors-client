@@ -5,7 +5,7 @@ const useCheck = () => {
   return function (name, email) {
     axiosPublic
       .post("/user-registration", { name, email, isAdmin:false, isMember:false})
-      .then((res) => console.log(res.data));
+      .then((res) => '');
   };
 };
 

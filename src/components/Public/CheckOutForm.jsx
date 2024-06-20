@@ -100,8 +100,8 @@ const CheckOutForm = () => {
     }
   }
   return (
-    <form onSubmit={handleSubmitPay} className="w-full">
-      <label htmlFor="subscription" className="mb-2 text-xl font-medium block">
+    <form onSubmit={handleSubmitPay} className="w-full ">
+      <label htmlFor="subscription" className="mb-2 text-xl font-medium block text-center md:text-left">
         Choose your subscription plan
       </label>
       <div className="w-full flex items-center gap-4">

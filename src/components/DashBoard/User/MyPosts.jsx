@@ -3,7 +3,7 @@ import usePosts from "../../../Hooks/usePosts";
 
 const MyPosts = () => {
   const { data } = usePosts();
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       {data?.length == 0 ? (

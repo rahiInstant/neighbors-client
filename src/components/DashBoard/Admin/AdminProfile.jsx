@@ -67,15 +67,15 @@ const AdminProfile = () => {
         <div className="flex flex-col justify-center gap-4 w-full">
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaUser className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data[0]?.value} Users</h1>
+            <h1 className="text-2xl font-bold">{data?data[0]?.value:0} Users</h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3">
             <BsPostcard className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data[1]?.value} Posts</h1>
+            <h1 className="text-2xl font-bold">{data?data[1]?.value:0} Posts</h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaCommentAlt className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data[2]?.value} Comments</h1>
+            <h1 className="text-2xl font-bold">{data?data[2]?.value:0} Comments</h1>
           </div>
         </div>
         <div className="p-5 border rounded-md flex items-center justify-center  w-full">

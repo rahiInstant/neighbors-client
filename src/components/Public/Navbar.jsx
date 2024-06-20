@@ -5,7 +5,7 @@ import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { FaPeopleGroup, FaPeopleRoof } from "react-icons/fa6";
 const Navbar = ({ announceCount }) => {
   const [open, isOpen] = useState(false);
   const [showToken, setShowToken] = useState(false);
@@ -30,8 +30,8 @@ const Navbar = ({ announceCount }) => {
       <div className="max-w-screen-2xl p-3 mx-auto">
         <div className="lg:flex lg:items-center lg:justify-between">
           <div className="flex items-center justify-between">
-            <a className="text-3xl font-semibold text-white" href="#">
-              Neighbors
+            <a className="text-xl sm:text-2xl lg:text-3xl font-semibold text-white flex items-center gap-2" href="/">
+              <FaPeopleRoof className=""/> Neighbors
             </a>
             <div className="flex lg:hidden">
               <RxHamburgerMenu

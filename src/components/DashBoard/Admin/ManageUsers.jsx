@@ -3,16 +3,34 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { IoMdDoneAll } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { FaRegUser } from "react-icons/fa";
+import { RotatingLines } from "react-loader-spinner";
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: user } = useQuery({
+  const { data: user, isPending } = useQuery({
     queryKey: ["all-users"],
     queryFn: async () => {
       const result = await axiosSecure.get("/all-user");
       return result.data;
     },
   });
-  console.log(user);
+  // console.log(user);
+  if (isPending) {
+    return (
+      <div className="flex justify-center">
+        <RotatingLines
+          visible={true}
+          height="60"
+          width="60"
+          color="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          ariaLabel="rotating-lines-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      </div>
+    );
+  }
   const handleIsAdmin = (email) => {
     axiosSecure
       .patch(`/make-admin`, { email: email })

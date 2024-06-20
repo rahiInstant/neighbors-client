@@ -23,13 +23,9 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       if (currentUser) {
         const userEmail = { email: currentUser.email };
-        axiosSecure
-          .post("/jwt", userEmail)
-          .then((res) =>
-            {
-              console.log(res)
-              localStorage.setItem("access_token", res.data.access_token)}
-          );
+        axiosSecure.post("/jwt", userEmail).then((res) => {
+          localStorage.setItem("access_token", res.data.access_token);
+        });
       } else {
         localStorage.removeItem("access_token");
       }
@@ -40,7 +36,7 @@ const AuthProvider = ({ children }) => {
     };
   }, [axiosSecure]);
 
-  console.log(user);
+  // console.log(user);
 
   function createUser(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);

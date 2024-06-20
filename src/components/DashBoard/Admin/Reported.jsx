@@ -16,7 +16,7 @@ const Reported = () => {
       return result.data;
     },
   });
-  console.log(reported);
+  // console.log(reported);
   if (isPending) {
     return (
       <div className="flex justify-center">

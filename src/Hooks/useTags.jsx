@@ -10,7 +10,7 @@ const useTags = () => {
       return result.data;
     },
   });
-  console.log(tags)
+  // console.log(tags)
   return { tags, tagPending };
 };
 

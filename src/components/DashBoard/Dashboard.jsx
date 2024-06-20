@@ -19,9 +19,9 @@ import useUserInfo from "../../Hooks/useUserInfo";
 const Dashboard = () => {
   const [key, setKey] = useState("0");
   const { user } = useAuth();
-  const { refetchPost } = usePosts();
   const { userInfo, userDataPending } = useUserInfo();
-  console.log(userInfo);
+  // const { refetchPost } = usePosts();
+  // console.log(userInfo);
   if (userDataPending) {
     return (
       <div className="flex justify-center mt-5">
@@ -62,27 +62,22 @@ const Dashboard = () => {
           <FaArrowLeft />
         </Link>
         <div className="mt-6 flex items-center justify-center flex-col bg-[url('/Snow.svg')] h-40 rounded-lg ">
-          <h1 className=" font-semibold mt-2 text-white text-center">
-            <span className="text-[40px]">Welcome Back,</span>
-            <br className="lg:hidden"/> <span className="text-[30px] lg:text-[40px] max-lg:italic">{user?.displayName}</span>
+          <h1 className="  mt-2 text-white text-center">
+            <span className="text-[40px] md:text-[55px] font-bold">Welcome Back</span>
+            <br /> <span className="text-[28px] lg:text-[35px] italic">{user?.displayName}</span>
           </h1>
         </div>
         <div>
           <Radio.Group
-            // onChange={handleModeChange}
-            // value={mode}
             style={{
               marginBottom: 8,
             }}
           >
-            {/* <Radio.Button value="top">Horizontal</Radio.Button>
-        <Radio.Button value="left">Vertical</Radio.Button> */}
           </Radio.Group>
           <Tabs
-            // defaultActiveKey="1"
             activeKey={key}
             onTabClick={(i) => {
-              refetchPost();
+              // refetchPost();
               setKey(i);
             }}
             // tabPosition={mode}

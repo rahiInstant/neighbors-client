@@ -68,7 +68,7 @@ const SignIn = () => {
       </Helmet>
       <div className=" p-5 mt-5  rounded-md mx-5 border">
         <div className="flex items-center justify-center flex-col bg-[url('/log.jpg')] border bg-no-repeat bg-cover h-40 rounded-lg ">
-          <h1 className="text-[40px] font-semibold mt-2 text-[#f1f1f1]">
+          <h1 className="text-[30px] md:text-[40px] font-semibold mt-2 text-[#f1f1f1]">
             Welcome Back !!!
           </h1>
         </div>
