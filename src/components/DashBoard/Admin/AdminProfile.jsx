@@ -6,6 +6,7 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { RotatingLines } from "react-loader-spinner";
 import useAuth from "../../../Hooks/useAuth";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 const AdminProfile = () => {
   const successMsg = (msg) => toast.success(msg);
   const { user } = useAuth();
@@ -37,20 +38,23 @@ const AdminProfile = () => {
 
   const handleAddTag = (e) => {
     e.preventDefault();
-    const form = e.target
+    const form = e.target;
     const tag = form.tag.value;
-    console.log(tag)
+    console.log(tag);
     axiosSecure
       .post("/add-tag", { tag, email: user?.email, name: user?.displayName })
       .then((res) => {
         if (res?.data?.insertedId) {
-          form.reset()
+          form.reset();
           successMsg("Add tag successfully.");
         }
       });
   };
   return (
     <div>
+      <Helmet>
+        <title>Neighbors | Dashboard</title>
+      </Helmet>
       <div className="mt-5 flex items-center flex-col">
         <img
           className="w-28 h-28 rounded-full border-4 border-[#30a01a91]"
@@ -67,15 +71,21 @@ const AdminProfile = () => {
         <div className="flex flex-col justify-center gap-4 w-full">
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaUser className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data?data[0]?.value:0} Users</h1>
+            <h1 className="text-2xl font-bold">
+              {data ? data[0]?.value : 0} Users
+            </h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3">
             <BsPostcard className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data?data[1]?.value:0} Posts</h1>
+            <h1 className="text-2xl font-bold">
+              {data ? data[1]?.value : 0} Posts
+            </h1>
           </div>
           <div className="border rounded-md p-6 flex items-center gap-3 ">
             <FaCommentAlt className="w-6 h-6 text-green-700" />
-            <h1 className="text-2xl font-bold">{data?data[2]?.value:0} Comments</h1>
+            <h1 className="text-2xl font-bold">
+              {data ? data[2]?.value : 0} Comments
+            </h1>
           </div>
         </div>
         <div className="p-5 border rounded-md flex items-center justify-center  w-full">

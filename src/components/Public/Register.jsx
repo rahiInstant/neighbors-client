@@ -1,5 +1,3 @@
-import { FaFacebook, FaUpload } from "react-icons/fa";
-import { IoLogoGoogle } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../Hooks/useAuth";
 import toast from "react-hot-toast";

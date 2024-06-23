@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   const [search, setSearch] = useState("");
@@ -41,6 +42,9 @@ const Home = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Neighbors | Home</title>
+      </Helmet>
       <Banner setSearch={setSearch} />
       <div className="mt-20 max-w-screen-xl mx-auto mb-20 ">
         <div className="mx-3 sm:mx-5">

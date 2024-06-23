@@ -16,6 +16,7 @@ import { ColorRing } from "react-loader-spinner";
 import { useForm } from "react-hook-form";
 import usePosts from "../../Hooks/usePosts";
 import useUserInfo from "../../Hooks/useUserInfo";
+import { Helmet } from "react-helmet-async";
 const Dashboard = () => {
   const [key, setKey] = useState("0");
   const { user } = useAuth();
@@ -54,6 +55,9 @@ const Dashboard = () => {
 
   return (
     <div className="mx-4 sm:mx-6 lg:mx-10">
+      <Helmet>
+        <title>Neighbors | Dashboard</title>
+      </Helmet>
       <div className="max-w-7xl mx-auto p-6 shadow my-8 ">
         <Link
           to="/"
@@ -63,8 +67,13 @@ const Dashboard = () => {
         </Link>
         <div className="mt-6 flex items-center justify-center flex-col bg-[url('/Snow.svg')] h-40 rounded-lg ">
           <h1 className="  mt-2 text-white text-center">
-            <span className="text-[40px] md:text-[55px] font-bold">Welcome Back</span>
-            <br /> <span className="text-[28px] lg:text-[35px] italic">{user?.displayName}</span>
+            <span className="text-[40px] md:text-[55px] font-bold">
+              Welcome Back
+            </span>
+            <br />{" "}
+            <span className="text-[28px] lg:text-[35px] italic">
+              {user?.displayName}
+            </span>
           </h1>
         </div>
         <div>
@@ -72,8 +81,7 @@ const Dashboard = () => {
             style={{
               marginBottom: 8,
             }}
-          >
-          </Radio.Group>
+          ></Radio.Group>
           <Tabs
             activeKey={key}
             onTabClick={(i) => {

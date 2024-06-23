@@ -84,7 +84,7 @@ const PostScroll = ({
               {/* <div className="font-medium italic">#save_us_from_scam</div> */}
             </div>
 
-            <div className=" flex flex-col max-sm:flex-row justify-between mt-6">
+            <div className=" flex max-[290px]:flex-col flex-row justify-between mt-6">
               <div className="flex items-center gap-3">
                 <div
                   onClick={() => handleReaction({ upVote: 1 }, item._id)}
@@ -93,7 +93,7 @@ const PostScroll = ({
                   <FaRegThumbsUp className="w-7 h-7 cursor-pointer p-1 hover:bg-slate-100 rounded-full" />{" "}
                   ({item.upVote})
                 </div>
-                <div
+                <div 
                   onClick={() => handleReaction({ downVote: 1 }, item._id)}
                   className="flex gap-1 items-center"
                 >
